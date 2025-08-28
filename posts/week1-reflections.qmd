@@ -1,0 +1,14 @@
+---
+title: "Week 1 Reflections"
+description: "Building my development board and programming in Verilog"
+author: "Erin Wang"
+date: "8/28/2025"
+categories:
+  - reflection
+  - labreport
+draft: false
+---
+
+## Summary
+
+## Reflections on Lab
