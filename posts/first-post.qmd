@@ -1,0 +1,10 @@
+---
+title: "Hello Quarto"
+description: "Welcome to my Quarto portfolio"
+author: "Erin Wang"
+date: "8/28/2025"
+categories:
+  - reflection
+  - labreport
+draft: false
+---
