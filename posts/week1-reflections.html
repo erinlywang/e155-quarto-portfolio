@@ -222,9 +222,14 @@ window.Quarto = {
 
 <section id="summary" class="level2">
 <h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<p>This week I soldered all the components onto my development board, programmed LED0 to SW6 (S[1:0]) with an XOR gate, programmed LED1 to SW6 (S[3:2]) with an AND gate, programmed LED2 to blink at 2.4 Hz using the high frequency oscillator internal clock with a 24’bit counter, and programmed a 7-segment display to show a hexadecimal digit corresponding to SW6 (S[3:0]).</p>
 </section>
 <section id="reflections-on-lab" class="level2">
 <h2 class="anchored" data-anchor-id="reflections-on-lab">Reflections on Lab</h2>
+<p>The lab was definitely difficult with learning how to use Radiant instead of Quartus Prime. I also found it tricky understanding how to program the blinking LED2 using the counter.</p>
+<p>I feel a lot more confident in understanding what is going on in a testbench program because before in E85 it seemed like somewhat of a black box to me.</p>
+<p>I’m still struggling with figuring out how to separate modules and writing testbenches for modules that don’t require a testvector file. I would like to continue strengthening my ability to write new modules and testbenches for those modules in a way that works in the overall top module. The trickiest module for this was trying to separate the clock divider for the blinking LED2 into another module. I ended up not doing a separate module because the code worked really well in the top module and I ran out of time.</p>
+<p>If I have more time I would like to go back and retry making an <code>led_blinker</code> module that can have the <code>HSOSC</code> module outside of the <code>led_blinker</code> module and feed the internal clock <code>int_osc</code> into the blinking led module.</p>
 
 
 
