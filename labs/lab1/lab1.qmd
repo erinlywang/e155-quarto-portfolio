@@ -36,7 +36,7 @@ The block diagram in @fig-block demonstrates the overall architecture of the des
 
 @fig-schematic shows the physical layout of the design. An internal 100 kΩ pullup resistor was used to ensure the active low reset pin for the switches was not floating. The output 7-segment diodes were connected using a 1kΩ current-limiting resistor to ensure the output current (~1.2 mA) did not exceed the maximum output current of the FPGA I/O pins. The figure also shows which pin number corresponds to which segment (i.e. a,b,c...) of the 7-segment display.
 
-![Diagram of the letter assignment for the 7-segment display.](images/seven_seg_map.png){#fig-sevsegletters,}
+![Diagram of the letter assignment for the 7-segment display.](images/seven_seg_map.png){#fig-sevsegletters}
 
 @fig-sevsegletters depicts the assignment of letters to the output display. In the program, seg[0] corresponds to a, seg[1] to b, and so on. 
 

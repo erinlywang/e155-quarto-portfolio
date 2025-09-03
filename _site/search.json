@@ -7,20 +7,6 @@
     "text": "Reflections on Lab"
   },
   {
-    "objectID": "blog.html",
-    "href": "blog.html",
-    "title": "E155 Blog",
-    "section": "",
-    "text": "Hello Quarto\n\n\n\n\n\nWelcome to my Quarto portfolio\n\n\n\n\n\nAug 28, 2025\n\n\nErin Wang\n\n\n\n\n\n\n\n\n\n\n\n\nWeek 1 Reflections\n\n\n\n\n\nBuilding my development board and programming in Verilog\n\n\n\n\n\nAug 28, 2025\n\n\nErin Wang\n\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "E155 Portfolio",
-    "section": "",
-    "text": "Erin Wang is a senior engineering major at Harvey Mudd College. Her interests are in robotics and mechatronics specifically for building animatronics in theme parks. One of her personal projects is to build the robot from the REPO game with 3D printed material and off-the-shelf servo motors. The link to her Github can be found here.\nAfter college, she aims to apply for Masters programs robotics, electrical engineering, or mechanical engineering. When she is not working hard in her classes, music and food fill her life. She loves to dance and sing as well as compose music, and she is always willing to try a new food place."
-  },
-  {
     "objectID": "labs/lab1/lab1.html",
     "href": "labs/lab1/lab1.html",
     "title": "Lab 1 Report",
@@ -60,14 +46,14 @@
     "href": "labs/lab1/lab1.html#schematic",
     "title": "Lab 1 Report",
     "section": "Schematic",
-    "text": "Schematic\n\n\n\n\n\n\nFigure 4: Schematic of the layout including the SW6 switch. The 7-segment display shares a common anode.\n\n\n\nFigure 4 shows the physical layout of the design. An internal 100 kΩ pullup resistor was used to ensure the active low reset pin for the switches was not floating. The output 7-segment diodes were connected using a 1kΩ current-limiting resistor to ensure the output current (~1.2 mA) did not exceed the maximum output current of the FPGA I/O pins. The figure also shows which pin number corresponds to which segment (i.e. a,b,c…) of the 7-segment display.\n{#fig-sevsegletters,}\n?@fig-sevsegletters depicts the assignment of letters to the output display. In the program, seg[0] corresponds to a, seg[1] to b, and so on."
+    "text": "Schematic\n\n\n\n\n\n\nFigure 4: Schematic of the layout including the SW6 switch. The 7-segment display shares a common anode.\n\n\n\nFigure 4 shows the physical layout of the design. An internal 100 kΩ pullup resistor was used to ensure the active low reset pin for the switches was not floating. The output 7-segment diodes were connected using a 1kΩ current-limiting resistor to ensure the output current (~1.2 mA) did not exceed the maximum output current of the FPGA I/O pins. The figure also shows which pin number corresponds to which segment (i.e. a,b,c…) of the 7-segment display.\n\n\n\n\n\n\nFigure 5: Diagram of the letter assignment for the 7-segment display.\n\n\n\nFigure 5 depicts the assignment of letters to the output display. In the program, seg[0] corresponds to a, seg[1] to b, and so on."
   },
   {
     "objectID": "labs/lab1/lab1.html#results-and-discussion",
     "href": "labs/lab1/lab1.html#results-and-discussion",
     "title": "Lab 1 Report",
     "section": "Results and Discussion",
-    "text": "Results and Discussion\n\nTestbench Simulation\n\n\n\n\n\n\nFigure 5: Testbench simulation results for top module. Note the red comes from the blinking LED bit. The simulation shows outputs match expected outputs for all testvectors\n\n\n\nThe design met all intended design objectives. Figure 5 shows a screenshot of the QuestaSim simulation for the top module’s testbench tb_top. The simulated outputs of led and seg match their respective expected outputs.\n\n\n\n\n\n\nFigure 6: Testbench simulation results for sevensegment module. The simulation shows outputs match expected outputs for all testvectors\n\n\n\nFigure 6 shows a screenshot of the QuestaSim simulation for the sevensegment module’s testbench tb_sevseg. The simulated outputs of seg match the expected outputs.\nIf the design wanted to reuse the clock divider program, a separate module could be developed for the clock divider that takes the HSOSC int_osc output as an input."
+    "text": "Results and Discussion\n\nTestbench Simulation\n\n\n\n\n\n\nFigure 6: Testbench simulation results for top module. Note the red comes from the blinking LED bit. The simulation shows outputs match expected outputs for all testvectors\n\n\n\nThe design met all intended design objectives. Figure 6 shows a screenshot of the QuestaSim simulation for the top module’s testbench tb_top. The simulated outputs of led and seg match their respective expected outputs.\n\n\n\n\n\n\nFigure 7: Testbench simulation results for sevensegment module. The simulation shows outputs match expected outputs for all testvectors\n\n\n\nFigure 7 shows a screenshot of the QuestaSim simulation for the sevensegment module’s testbench tb_sevseg. The simulated outputs of seg match the expected outputs.\nIf the design wanted to reuse the clock divider program, a separate module could be developed for the clock divider that takes the HSOSC int_osc output as an input."
   },
   {
     "objectID": "labs/lab1/lab1.html#conclusion",
@@ -82,5 +68,19 @@
     "title": "Lab 1 Report",
     "section": "AI Prototype and Reflection",
     "text": "AI Prototype and Reflection\nThe first run with Claude AI produced a code very similar to the one I had written for the led_blinker by toggling the led under an always_ff statement with the counter. Some key differences was that the program used the SB_HFOSC module rather than the HSOSC which was new to me and was also unrecognized by Radiant giving a “instantiating unknown module” error.\nAfter feeding the error back into the LLM, the LLM fed back to declare the primitive with blackbox attribute which is also completely new to me. However parsing this still provided an error that CLKHF_DIV is not defined in this module. The instantiation of the SB_HFOSC module seemed to run into an error where the parameter in the module was not defined when later used in the module.\nAnother key difference and something new to me was that the program used localparam int to initialize a maximum counter and the width of the counter. The width of the counter used the code $clog2(COUNTER_MAX + 1) which I have never seen.\nIf I were to use the LLM again, I would like to tell the LLM what modules to use. The issue seemed to be with SB_HFOSC so feeding the LLM explicitly to use HSOSC could be quicker to getting towards a working code. Doing this actually changed the error to duplicate module name because the LLM program was trying to delcare the HSOSC primitive. Then feeding this error the LLM replied that the error is likely due to the HSOSC module already being available and it deleted the primitive declaration. After this deletion the code synthesized with no errors!\nI think the quality of the output is quite high. Each new section of code is commented with an overarching comment of the module’s function at the top. The only thing is that the LLM can get really stuck on executing the code one way and sometimes better quality code can be written by knowing multiple avenues of which to implement the code. So feeding the desired packages or modules can be really helpful in producing successful LLM code."
+  },
+  {
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "E155 Blog",
+    "section": "",
+    "text": "Hello Quarto\n\n\n\n\n\nWelcome to my Quarto portfolio\n\n\n\n\n\nAug 28, 2025\n\n\nErin Wang\n\n\n\n\n\n\n\n\n\n\n\n\nWeek 1 Reflections\n\n\n\n\n\nBuilding my development board and programming in Verilog\n\n\n\n\n\nAug 28, 2025\n\n\nErin Wang\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "E155 Portfolio",
+    "section": "",
+    "text": "Erin Wang is a senior engineering major at Harvey Mudd College. Her interests are in robotics and mechatronics specifically for building animatronics in theme parks. One of her personal projects is to build the robot from the REPO game with 3D printed material and off-the-shelf servo motors. The link to her Github can be found here.\nAfter college, she aims to apply for Masters programs robotics, electrical engineering, or mechanical engineering. When she is not working hard in her classes, music and food fill her life. She loves to dance and sing as well as compose music, and she is always willing to try a new food place."
   }
 ]
