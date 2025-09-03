@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Erin Wang">
+<meta name="dcterms.date" content="2025-09-02">
 
-<title>lab1 – E155 Portfolio</title>
+<title>Lab 1 Report – E155 Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -67,6 +69,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -135,17 +166,184 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#lab-hours" id="toc-lab-hours" class="nav-link active" data-scroll-target="#lab-hours">Lab Hours</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#design-and-testing-methodology" id="toc-design-and-testing-methodology" class="nav-link" data-scroll-target="#design-and-testing-methodology">Design and Testing Methodology</a>
+  <ul class="collapse">
+  <li><a href="#blinking-led2" id="toc-blinking-led2" class="nav-link" data-scroll-target="#blinking-led2">Blinking LED2</a></li>
+  <li><a href="#resistor-choice-for-7-segment-display" id="toc-resistor-choice-for-7-segment-display" class="nav-link" data-scroll-target="#resistor-choice-for-7-segment-display">Resistor choice for 7-segment Display</a></li>
+  </ul></li>
+  <li><a href="#technical-documentation" id="toc-technical-documentation" class="nav-link" data-scroll-target="#technical-documentation">Technical Documentation</a>
+  <ul class="collapse">
+  <li><a href="#block-diagram" id="toc-block-diagram" class="nav-link" data-scroll-target="#block-diagram">Block Diagram</a></li>
+  </ul></li>
+  <li><a href="#schematic" id="toc-schematic" class="nav-link" data-scroll-target="#schematic">Schematic</a></li>
+  <li><a href="#results-and-discussion" id="toc-results-and-discussion" class="nav-link" data-scroll-target="#results-and-discussion">Results and Discussion</a>
+  <ul class="collapse">
+  <li><a href="#testbench-simulation" id="toc-testbench-simulation" class="nav-link" data-scroll-target="#testbench-simulation">Testbench Simulation</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#ai-prototype-and-reflection" id="toc-ai-prototype-and-reflection" class="nav-link" data-scroll-target="#ai-prototype-and-reflection">AI Prototype and Reflection</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lab 1 Report</h1>
+</div>
 
 
 
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Erin Wang </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 2, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="lab-hours" class="level2">
+<h2 class="anchored" data-anchor-id="lab-hours">Lab Hours</h2>
+<p>I spent 24 hours working on this lab.</p>
+</section>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>Lab 1 dealt with setting up and testing the FPGA including soldering all parts of the board and writing SystemVerilog code to verify the LEDs and interface with a 7-segment display on a breadboard.</p>
+</section>
+<section id="design-and-testing-methodology" class="level2">
+<h2 class="anchored" data-anchor-id="design-and-testing-methodology">Design and Testing Methodology</h2>
+<section id="blinking-led2" class="level3">
+<h3 class="anchored" data-anchor-id="blinking-led2">Blinking LED2</h3>
+<p>The on-board high-speed oscillator (HSOSC) from the iCE40 UltraPlus primitive library was used to generate a clock signal at 24 MHz. Then, a counter was used to divide the high frequency clock signal to drive an external LED (LED2) such that it blinks at 2.4 Hz.</p>
+<div id="fig-ledcalc" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ledcalc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/lab1_ledcalc.jpg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ledcalc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: The calculation for the counter to make LED2 blink at 2.4 Hz.
+</figcaption>
+</figure>
+</div>
+<p>The calculation in <a href="#fig-ledcalc" class="quarto-xref">Figure&nbsp;1</a> derived that the counter needed to reach 5000000 before setting the LED HIGH in order to blink the LED at 2.4 Hz with a 50% duty cycle.</p>
+</section>
+<section id="resistor-choice-for-7-segment-display" class="level3">
+<h3 class="anchored" data-anchor-id="resistor-choice-for-7-segment-display">Resistor choice for 7-segment Display</h3>
+<div id="fig-sevsegcalc" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sevsegcalc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/lab1_sevsegcalc.jpg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sevsegcalc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: The calculation for the 7-segment current-limiting resistors using a V_f of 2.1V from the MAN4600 datasheet.
+</figcaption>
+</figure>
+</div>
+<p>The calculation in <a href="#fig-sevsegcalc" class="quarto-xref">Figure&nbsp;2</a> derived 1kΩ as an appropriate resistor to provide ~1.2 mA to the LED segments.</p>
+</section>
+</section>
+<section id="technical-documentation" class="level2">
+<h2 class="anchored" data-anchor-id="technical-documentation">Technical Documentation</h2>
+<p>The source code for the project can be found in the associated <a href="https://github.com/erinlywang/e155-lab1">Github repository</a></p>
+<section id="block-diagram" class="level3">
+<h3 class="anchored" data-anchor-id="block-diagram">Block Diagram</h3>
+<div id="fig-block" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-block-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/lab1_block.jpg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-block-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Block diagram showing the top module and the two submodules HSOSC and sevensegment.
+</figcaption>
+</figure>
+</div>
+<p>The block diagram in <a href="#fig-block" class="quarto-xref">Figure&nbsp;3</a> demonstrates the overall architecture of the design. The top-level module <code>top</code> includes two submodules: the high-speed oscillator block (<code>HSOSC</code>) and the 7-segment display module (<code>sevensegment</code>). The programming for the leds were placed in the <code>top</code> module.</p>
+</section>
+</section>
+<section id="schematic" class="level2">
+<h2 class="anchored" data-anchor-id="schematic">Schematic</h2>
+<div id="fig-schematic" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-schematic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/lab1_schematic.jpg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-schematic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Schematic of the layout including the SW6 switch. The 7-segment display shares a common anode.
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-schematic" class="quarto-xref">Figure&nbsp;4</a> shows the physical layout of the design. An internal 100 kΩ pullup resistor was used to ensure the active low reset pin for the switches was not floating. The output 7-segment diodes were connected using a 1kΩ current-limiting resistor to ensure the output current (~1.2 mA) did not exceed the maximum output current of the FPGA I/O pins. The figure also shows which pin number corresponds to which segment (i.e.&nbsp;a,b,c…) of the 7-segment display.</p>
+<p><img src="images/seven_seg_map.png" class="img-fluid" alt="Diagram of the letter assignment for the 7-segment display.">{#fig-sevsegletters,}</p>
+<p><strong>?@fig-sevsegletters</strong> depicts the assignment of letters to the output display. In the program, seg[0] corresponds to a, seg[1] to b, and so on.</p>
+</section>
+<section id="results-and-discussion" class="level2">
+<h2 class="anchored" data-anchor-id="results-and-discussion">Results and Discussion</h2>
+<section id="testbench-simulation" class="level3">
+<h3 class="anchored" data-anchor-id="testbench-simulation">Testbench Simulation</h3>
+<div id="fig-tbtop" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-tbtop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/lab1_toptest.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tbtop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Testbench simulation results for top module. Note the red comes from the blinking LED bit. The simulation shows outputs match expected outputs for all testvectors
+</figcaption>
+</figure>
+</div>
+<p>The design met all intended design objectives. <a href="#fig-tbtop" class="quarto-xref">Figure&nbsp;5</a> shows a screenshot of the QuestaSim simulation for the <code>top</code> module’s testbench <code>tb_top</code>. The simulated outputs of <code>led</code> and <code>seg</code> match their respective expected outputs.</p>
+<div id="fig-tbsevseg" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-tbsevseg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/lab1_sevsegtest.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tbsevseg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Testbench simulation results for sevensegment module. The simulation shows outputs match expected outputs for all testvectors
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-tbsevseg" class="quarto-xref">Figure&nbsp;6</a> shows a screenshot of the QuestaSim simulation for the <code>sevensegment</code> module’s testbench <code>tb_sevseg</code>. The simulated outputs of <code>seg</code> match the expected outputs.</p>
+<p>If the design wanted to reuse the clock divider program, a separate module could be developed for the clock divider that takes the HSOSC <code>int_osc</code> output as an input.</p>
+</section>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>The design successfully blinked LED2 using the on-board high-speed oscillator, programmed LED1 and LED0 to the given truth table corresponding to s[3:2] and s[1:0] respectively, and displayed on the 7-segment display a single hexadecimal digit corresponding to the switches s[3:0] such that each digit is unique/distinguishable from the rest.</p>
+</section>
+<section id="ai-prototype-and-reflection" class="level2">
+<h2 class="anchored" data-anchor-id="ai-prototype-and-reflection">AI Prototype and Reflection</h2>
+<p>The first run with Claude AI produced a code very similar to the one I had written for the led_blinker by toggling the led under an <code>always_ff</code> statement with the counter. Some key differences was that the program used the <code>SB_HFOSC</code> module rather than the <code>HSOSC</code> which was new to me and was also unrecognized by Radiant giving a “instantiating unknown module” error.</p>
+<p>After feeding the error back into the LLM, the LLM fed back to declare the primitive with blackbox attribute which is also completely new to me. However parsing this still provided an error that CLKHF_DIV is not defined in this module. The instantiation of the <code>SB_HFOSC</code> module seemed to run into an error where the parameter in the module was not defined when later used in the module.</p>
+<p>Another key difference and something new to me was that the program used <code>localparam int</code> to initialize a maximum counter and the width of the counter. The width of the counter used the code <code>$clog2(COUNTER_MAX + 1)</code> which I have never seen.</p>
+<p>If I were to use the LLM again, I would like to tell the LLM what modules to use. The issue seemed to be with <code>SB_HFOSC</code> so feeding the LLM explicitly to use <code>HSOSC</code> could be quicker to getting towards a working code. Doing this actually changed the error to duplicate module name because the LLM program was trying to delcare the HSOSC primitive. Then feeding this error the LLM replied that the error is likely due to the <code>HSOSC</code> module already being available and it deleted the primitive declaration. After this deletion the code synthesized with no errors!</p>
+<p>I think the quality of the output is quite high. Each new section of code is commented with an overarching comment of the module’s function at the top. The only thing is that the LLM can get really stuck on executing the code one way and sometimes better quality code can be written by knowing multiple avenues of which to implement the code. So feeding the desired packages or modules can be really helpful in producing successful LLM code.</p>
 
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -238,7 +436,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/erinlywang\.github\.io\/e155-quarto-portfolio\/");
+      var filterRegex = new RegExp('/' + window.location.host + '/');
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
@@ -252,6 +450,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         if (link.dataset.originalHref !== undefined) {
           link.href = link.dataset.originalHref;
         }
+          // default icon
+          link.classList.add("external");
       }
     }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {

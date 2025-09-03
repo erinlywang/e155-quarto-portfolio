@@ -32,6 +32,13 @@ format:
       - brand
     css: styles.css
     toc: true
+    math:
+      method: mathjax
+      options:
+        autoNumber: "AMS"
+      citations: true
+    link-external-icon: true
+    code-line-numbers: true
 
 
 
