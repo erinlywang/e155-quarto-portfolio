@@ -1,0 +1,78 @@
+---
+title: "Lab 2 Report"
+author: "Erin Wang"
+date: "9/9/2025"
+---
+## Lab Hours
+I spent 20 hours on this lab.
+
+## Introduction
+Lab 2 involved learning time multiplexing and application of PNP transistors to efficiently use the I/O on the FPGA by using one module and two 4 DIP switch inputs to control a dual 7-segment display on a breadboard. The lab also involved displaying the sum of the two inputs onto external LEDs. 
+
+## Design and Testing Methodology
+
+### Dual Display with one 7-Segment Module
+In order to display two independent hexadecimal numbers on the dual 7-segment display using only one `sevseg` module, the trick was to send the same output to both digits but alternate between turning on the first digit and the second digit fast enough that the different digits are seen at the same time to our eyes (~60 Hz). To alternate between the two, the on-board high-speed oscillator (HSOSC) from the iCE40 UltraPlus primitive library was used to generate a clock signal at 24 MHz then a counter was used to divide the high frequency clock signal into a 60 Hz signal.
+
+
+![The calculation for the counter to make the inputs and output powers alternate at 60 Hz.](images/lab2_countercalc.jpg){#fig-countercalc}
+
+The calculation in @fig-countercalc derived that the counter needed to reach 200000 before setting the multiplexer select HIGH in order switch between the two inputs and turning on the two outputs at 60 Hz. For example, if the first digit should read 1 and then second digit should read 5, then when `clk` is `LOW`, the program takes 1 as the input and sends 1 to both digits' outputs. Then, the program turns only the first digit's power on and turns the other digit's power off. When `clk` is `HIGH`, the program takes 5 as the input and sends 5 to both digits' outputs. Then the program turns the second digit's power on and turns the first digit's power off. This switch happens fast enough that the human eye sees both individual digits on the display. 
+
+### Resistor choice for 7-segment Display
+![The calculation for the 7-segment current-limiting resistors using a V_f of 1.9V from the MAN4600 datasheet.](images/lab2_sevsegcalc.jpg){#fig-sevsegcalc}
+
+The calculation in @fig-sevsegcalc derived 1kΩ as an appropriate resistor to provide ~1.4 mA to the LED segments of the 7-segment display. 
+
+### Resistor choice for external LEDs
+![The calculation for the external LEDs current-limiting resistors using a V_f of 1.9V from the green LED datasheet.](images/lab2_ledcalc.jpg){#fig-ledcalc}
+
+The calculation in @fig-ledcalc derived 1kΩ as an appropriate resistor to provide ~1.4 mA to the external LEDs. The calculation is the same as for the 7-segment display, however the cathodes of the LEDs are connected to ground rather than to a pin. 
+
+### Resistor choice for transistors
+![The calculation for the transistor current-limiting resistors using a V_f of 0.7V for the emitter diode such that the base voltage is 2.6V.](images/lab2_transcalc.jpg){#fig-transcalc}
+
+The calculation in @fig-transcalc derived 2.7kΩ as an appropriate resistor (stock-room available) to provide less than 1 mA to FPGA I/O pins.
+
+## Technical Documentation
+The source code for the project can be found in the associated [Github repository](https://github.com/erinlywang/e155-lab2)
+
+### Block Diagram
+![Block diagram showing the top module and the three submodules `HSOSC`, `mpx`, and `sevseg`.](images/lab2_block.jpg){#fig-block}
+
+The block diagram in @fig-block demonstrates the overall architecture of the design. The top-level module `top` includes three submodules: the high-speed oscillator block (`HSOSC`), the multiplexer to alternate at 60 Hz (`mpx`), and the 7-segment display module from Lab 1 (`sevseg`). The programming for the LED sum and the multiplexer logic using the `select` output of `mpx`  were placed in the `top` module. 
+
+## Schematic
+![Schematic of the layout not including the SW6 switch or the reset button (P43). The diodes of each digit of the 7-segment display share a common anode.](images/lab2_schematic.jpg){#fig-schematic}
+
+@fig-schematic shows the physical layout of the design. An internal 100 kΩ pullup resistor was used to ensure the active low reset pin for the switches was not floating. The output 7-segment diodes were connected using a 1kΩ current-limiting resistor to ensure the output current (~1.4 mA) did not exceed the maximum output current of the FPGA I/O pins. The external LED diodes (green) were connected using a 1kΩ current-limiting resistor to ensure the output current (~1.4 mA) did not exceed the maximum output current of the LEDs. The figure also shows which pin number of the dual display corresponds to which segment (i.e. A1,A2,B1, B2...) of the 7-segment display.
+
+![Diagram of the letter assignment for the 7-segment display.](images/seven_seg_map.png){#fig-sevsegletters}
+
+@fig-sevsegletters depicts the assignment of letters to a digit of the output display. In the program, seg[0] corresponds to a, seg[1] to b, and so on. 
+
+## Results and Discussion
+
+### Testbench Simulation
+#### `top` Module
+![Testbench simulation results for top module. The simulation shows outputs match expected outputs for all asserts](images/lab2_tbtop.png){#fig-tbtop}
+
+The design met all intended design objectives. @fig-tbtop shows a screenshot of the QuestaSim simulation for the `top` module's testbench `tb_top`. The simulated outputs of `led` match the `ledexpected` output. Note that not all the tested inputs of `led` are shown in this image. The outputs of `top`: `seg`, `trans0`, and `trans1` are not shown in this testbench because they rely on the `mpx` module which uses the `HSOSC` clock to provide the `sel` output. The outputs for `seg` are tested in the `sevseg` testbench while `trans0` and `trans1` are tested in the `mpx` testbench. 
+
+#### `sevseg` Module
+![Testbench simulation results for the sevseg module. The simulation shows outputs match expected outputs for all testvectors](images/lab2_tbsevseg.png){#fig-tbsevseg}
+
+@fig-tbsevseg shows a screenshot of the QuestaSim simulation for the `sevseg` module's testbench `tb_sevseg`. The simulated outputs of `seg` match the expected outputs. 
+
+#### `mpx` Module
+![Testbench simulation results for the mpx module for before the flip. The simulation shows outputs match expected outputs for all asserts](images/lab2_tbmpx_sel0.png){#fig-tbmpx0}
+
+@fig-tbmpx0 shows a screenshot of the QuestaSim simulation for the `mpx` module's testbench `tb_mpx` to test that the `sel`, `trans0`, and `trans1` output matches the expected outputs for before the alternation (aka flip). The simulated outputs of `mpx` match the expected outputs for before the flip. 
+
+![Testbench simulation results for the mpx module for after the flip. The simulation shows outputs match expected outputs for all testvectors](images/lab2_tbmpx_sel1.png){#fig-tbmpx1}
+
+@fig-tbmpx1 shows a screenshot of the QuestaSim simulation for the `mpx` module's testbench `tb_mpx` to test that the `sel`, `trans0`, and `trans1` output matches the expected outputs for after the alternation (aka flip) that should occur when the counter reaches 200000. The simulated outputs of `mpx` match the expected outputs for after the flip and the flip happens when the counter reaches 200000. 
+
+## Conclusion
+
+The design successfully displayed two individual digits on the dual 7-segment display using only one `sevseg` module. The 5 LEDs also successfully display the sum of the two inputs. There is no bleeding between the digits or flickering and the 7-segment display does not dim depending on which numbers are displayed. The digits are also upright to the viewer. 
