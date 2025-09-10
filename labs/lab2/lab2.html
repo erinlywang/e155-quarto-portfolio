@@ -190,6 +190,11 @@ window.Quarto = {
   <li><a href="#testbench-simulation" id="toc-testbench-simulation" class="nav-link" data-scroll-target="#testbench-simulation">Testbench Simulation</a></li>
   </ul></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#ai-prototype-and-reflection" id="toc-ai-prototype-and-reflection" class="nav-link" data-scroll-target="#ai-prototype-and-reflection">AI Prototype and Reflection</a>
+  <ul class="collapse">
+  <li><a href="#without-lab-1-files-provided" id="toc-without-lab-1-files-provided" class="nav-link" data-scroll-target="#without-lab-1-files-provided">Without Lab 1 Files Provided</a></li>
+  <li><a href="#with-lab-1-files-provided" id="toc-with-lab-1-files-provided" class="nav-link" data-scroll-target="#with-lab-1-files-provided">With Lab 1 Files Provided</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -344,17 +349,28 @@ Figure&nbsp;7: Diagram of the letter assignment for the 7-segment display.
 <h3 class="anchored" data-anchor-id="testbench-simulation">Testbench Simulation</h3>
 <section id="top-module" class="level4">
 <h4 class="anchored" data-anchor-id="top-module"><code>top</code> Module</h4>
-<div id="fig-tbtop" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-tbtophsosc" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-tbtop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="images/lab2_tbtop.png" class="img-fluid figure-img">
+<div aria-describedby="fig-tbtophsosc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/lab2_tbtopHSOSC.png" class="img-fluid figure-img">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tbtop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8: Testbench simulation results for top module. The simulation shows outputs match expected outputs for all asserts
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tbtophsosc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: Testbench simulation results for top module showing the HSOSC toggling. The simulation shows outputs match expected outputs for all asserts
 </figcaption>
 </figure>
 </div>
-<p>The design met all intended design objectives. <a href="#fig-tbtop" class="quarto-xref">Figure&nbsp;8</a> shows a screenshot of the QuestaSim simulation for the <code>top</code> module’s testbench <code>tb_top</code>. The simulated outputs of <code>led</code> match the <code>ledexpected</code> output. Note that not all the tested inputs of <code>led</code> are shown in this image. The outputs of <code>top</code>: <code>seg</code>, <code>trans0</code>, and <code>trans1</code> are not shown in this testbench because they rely on the <code>mpx</code> module which uses the <code>HSOSC</code> clock to provide the <code>sel</code> output. The outputs for <code>seg</code> are tested in the <code>sevseg</code> testbench while <code>trans0</code> and <code>trans1</code> are tested in the <code>mpx</code> testbench.</p>
+<p>The design met all intended design objectives. <a href="#fig-tbtophsosc" class="quarto-xref">Figure&nbsp;8</a> shows a screenshot of the QuestaSim simulation for the <code>top</code> module’s testbench <code>tb_top</code> after approximately <code>#10000</code> time units to show that the <code>HSOSC</code> toggles.</p>
+<div id="fig-tbtopled" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-tbtopled-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/lab2_tbtopLED.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tbtopled-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: Testbench simulation results for top module showing the outputs for the LED. The simulation shows the LED outputs match expected outputs for all asserts
+</figcaption>
+</figure>
+</div>
+<p>As shown in <a href="#fig-tbtopled" class="quarto-xref">Figure&nbsp;9</a>, the simulated outputs of <code>led</code> match the <code>ledexpected</code> output. Note that not all the tested inputs of <code>led</code> are shown in this image. The outputs of <code>top</code>: <code>seg</code>, <code>trans0</code>, and <code>trans1</code> are not tested in this testbench because they rely on the <code>mpx</code> module which uses the <code>HSOSC</code> clock to provide the transistor output and switch input into <code>sevseg</code>. The outputs for <code>seg</code> are tested in the <code>sevseg</code> testbench while <code>trans0</code> and <code>trans1</code> and the switch input into <code>sevseg</code> are tested in the <code>mpx</code> testbench.</p>
 </section>
 <section id="sevseg-module" class="level4">
 <h4 class="anchored" data-anchor-id="sevseg-module"><code>sevseg</code> Module</h4>
@@ -364,45 +380,64 @@ Figure&nbsp;8: Testbench simulation results for top module. The simulation shows
 <img src="images/lab2_tbsevseg.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tbsevseg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9: Testbench simulation results for the sevseg module. The simulation shows outputs match expected outputs for all testvectors
+Figure&nbsp;10: Testbench simulation results for the sevseg module. The simulation shows outputs match expected outputs for all testvectors
 </figcaption>
 </figure>
 </div>
-<p><a href="#fig-tbsevseg" class="quarto-xref">Figure&nbsp;9</a> shows a screenshot of the QuestaSim simulation for the <code>sevseg</code> module’s testbench <code>tb_sevseg</code>. The simulated outputs of <code>seg</code> match the expected outputs.</p>
+<p><a href="#fig-tbsevseg" class="quarto-xref">Figure&nbsp;10</a> shows a screenshot of the QuestaSim simulation for the <code>sevseg</code> module’s testbench <code>tb_sevseg</code>. The simulated outputs of <code>seg</code> match the expected outputs.</p>
 </section>
 <section id="mpx-module" class="level4">
 <h4 class="anchored" data-anchor-id="mpx-module"><code>mpx</code> Module</h4>
 <div id="fig-tbmpx0" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-tbmpx0-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="images/lab2_tbmpx_sel0.png" class="img-fluid figure-img">
+<img src="images/lab2_tbmpxCOUNTLOW.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tbmpx0-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;10: Testbench simulation results for the mpx module for before the flip. The simulation shows outputs match expected outputs for all asserts
+Figure&nbsp;11: Testbench simulation results for the mpx module for before the flip. The simulation shows outputs match expected outputs for all asserts
 </figcaption>
 </figure>
 </div>
-<p><a href="#fig-tbmpx0" class="quarto-xref">Figure&nbsp;10</a> shows a screenshot of the QuestaSim simulation for the <code>mpx</code> module’s testbench <code>tb_mpx</code> to test that the <code>sel</code>, <code>trans0</code>, and <code>trans1</code> output matches the expected outputs for before the alternation (aka flip). The simulated outputs of <code>mpx</code> match the expected outputs for before the flip.</p>
+<p><a href="#fig-tbmpx0" class="quarto-xref">Figure&nbsp;11</a> shows a screenshot of the QuestaSim simulation for the <code>mpx</code> module’s testbench <code>tb_mpx</code> to test that the <code>s</code>, <code>trans0</code>, and <code>trans1</code> output matches the expected outputs for before the alternation (aka flip) at <code>counter = 200000</code>. Because we are before the flip, <code>s</code> should be the same as the <code>s0</code> input and <code>trans0</code> and <code>trans1</code> should be 0 and 1 respectively. The simulated outputs of <code>mpx</code> match the expected outputs for before the flip and the counter is counting up.</p>
 <div id="fig-tbmpx1" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-tbmpx1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="images/lab2_tbmpx_sel1.png" class="img-fluid figure-img">
+<img src="images/lab2_tbmpxCOUNTHIGH.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tbmpx1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11: Testbench simulation results for the mpx module for after the flip. The simulation shows outputs match expected outputs for all testvectors
+Figure&nbsp;12: Testbench simulation results for the mpx module for after the flip. The simulation shows outputs match expected outputs for all testvectors
 </figcaption>
 </figure>
 </div>
-<p><a href="#fig-tbmpx1" class="quarto-xref">Figure&nbsp;11</a> shows a screenshot of the QuestaSim simulation for the <code>mpx</code> module’s testbench <code>tb_mpx</code> to test that the <code>sel</code>, <code>trans0</code>, and <code>trans1</code> output matches the expected outputs for after the alternation (aka flip) that should occur when the counter reaches 200000. The simulated outputs of <code>mpx</code> match the expected outputs for after the flip and the flip happens when the counter reaches 200000.</p>
+<p><a href="#fig-tbmpx1" class="quarto-xref">Figure&nbsp;12</a> shows a screenshot of the QuestaSim simulation for the <code>mpx</code> module’s testbench <code>tb_mpx</code> to test that the <code>s</code>, <code>trans0</code>, and <code>trans1</code> output matches the expected outputs for after the alternation (aka flip) that should occur when the counter reaches 200000. Because we are after the flip, <code>s</code> should be the same as the <code>s1</code> input and <code>trans0</code> and <code>trans1</code> should be 1 and 0 respectively. The simulated outputs of <code>mpx</code> match the expected outputs for after the flip and the flip happens when the counter reaches 200000. The reset of the counter after <code>count</code> reaches 200000 is also visualized.</p>
 </section>
 </section>
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
 <p>The design successfully displayed two individual digits on the dual 7-segment display using only one <code>sevseg</code> module. The 5 LEDs also successfully display the sum of the two inputs. There is no bleeding between the digits or flickering and the 7-segment display does not dim depending on which numbers are displayed. The digits are also upright to the viewer.</p>
+</section>
+<section id="ai-prototype-and-reflection" class="level2">
+<h2 class="anchored" data-anchor-id="ai-prototype-and-reflection">AI Prototype and Reflection</h2>
+<section id="without-lab-1-files-provided" class="level3">
+<h3 class="anchored" data-anchor-id="without-lab-1-files-provided">Without Lab 1 Files Provided</h3>
+<p>Off the bat I already recognized the Claude Ai put multiple modules in one file and the testbench module in another file. When trying to synthesize the code, there was an error in the testbench module. The testbench had two <code>initial</code> statements. The first <code>initial</code> statement housed the error of <code>loop count limit exceeded forever never breaks</code>. This is because the AI had setup the clock with the following code:</p>
+<pre><code>initial begin
+    clk = 0;
+    forever #5 clk = ~clk;
+end</code></pre>
+<p>This block of code is notably different from how I implement a clock. I use an <code>always</code> statement instead of <code>initial</code> to setup the clock.</p>
+<p>Just attempting to synthesize without including the testbench in implementation does work! Looking at the<code>seven_seg_decoder</code> module from the AI, the <code>case</code> statement looks like mine, accomodating for the common anode by having 1 as <code>LOW</code> and 0 as <code>HIGH</code> for the display. There is however no <code>default</code> case which could be a problem for debugging. The <code>seven_seg_mux</code> module uses the same clock divider setup as the provided example on the E155 website by using a counter and setting the multiplexer’s select to the last bit. What’s more strikingly different is that the input multiplexer code is an <code>always_comb</code> statement whereas I used the syntax for a multiplexer of <code>select ? in1:in0</code>. The AI also used an <code>always_ff</code> statement for the output demultiplexer with latches by turning the output to either all segments off or all segments on. However, we were told explicitly not to use latches and to use PNP transistors to control the anode power.</p>
+</section>
+<section id="with-lab-1-files-provided" class="level3">
+<h3 class="anchored" data-anchor-id="with-lab-1-files-provided">With Lab 1 Files Provided</h3>
+<p>With the Lab 1 files provided, the AI did not provide a testbench. The code was much shorter than without the Lab 1 files. The code does use HSOSC immediately which is different from the Lab 1 AI Prototype. For the time multiplexing, the AI created a clock divider to toggle at 1200 Hz. This seems a little high to me as a computer screen is around 60 Hz. Such high frequency could cause some bleeding between digits. The code for the multiplexer select is how I did the select in my code where the counter resets and the mux select switches to its opposite logic after a certain number of counts. The input multiplexer code was still an <code>always_comb</code> statement rather than the <code>select ? in1:in0</code> format. The code then uses my <code>sevensegment</code> module to input the switch chosen from the <code>always_comb</code> statement and outputs the segments to turn on. The AI this time uses an <code>always_comb</code> for the output demultiplexer to use the multiplexer select from the clock divider to choose whether to make the first digit active and the second display off or vice versa. The <code>default</code> display is that both displays are off.</p>
+<p>The code also provides a small section to use LEDs to check which display is active, check when the two inputs differ, and to blink at the frequency of the clock divider.</p>
+<p>Overall, I think both codes are very high quality although may be a little wordy considering mux logic can be much shorter than an <code>always_comb</code> statement. The code was interesting to compare as we didn’t specify to the AI to send an output to PNP transistors to control which digit was on and I think the prototype had a clever way of sending the output to the LED segments.</p>
 
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
