@@ -22,7 +22,7 @@ The calculation in @fig-countercalc derived that the counter needed to reach 200
 ### Resistor choice for 7-segment Display
 ![The calculation for the 7-segment current-limiting resistors using a V_f of 1.9V from the MAN4600 datasheet.](images/lab2_sevsegcalc.jpg){#fig-sevsegcalc}
 
-The calculation in @fig-sevsegcalc derived 1kΩ as an appropriate resistor to provide ~1.4 mA to the LED segments of the 7-segment display. 
+The calculation in @fig-sevsegcalc derived 1kΩ as an appropriate resistor to provide ~1.2 mA to the LED segments of the 7-segment display. The drop in voltage from the emitter is due to the emitter saturation voltage. Thus the voltage going into the segment displays is 3.1 V. 
 
 ### Resistor choice for external LEDs
 ![The calculation for the external LEDs current-limiting resistors using a V_f of 1.9V from the green LED datasheet.](images/lab2_ledcalc.jpg){#fig-ledcalc}
