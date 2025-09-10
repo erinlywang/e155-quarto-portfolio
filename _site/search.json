@@ -105,6 +105,13 @@
     "text": "I spent 20 hours on this lab."
   },
   {
+    "objectID": "labs/lab2/lab2.html#lab-hours",
+    "href": "labs/lab2/lab2.html#lab-hours",
+    "title": "Lab 2 Report",
+    "section": "",
+    "text": "I spent 20 hours on this lab."
+  },
+  {
     "objectID": "labs/lab2/lab2.html#introduction",
     "href": "labs/lab2/lab2.html#introduction",
     "title": "Lab 2 Report",
@@ -137,7 +144,7 @@
     "href": "labs/lab2/lab2.html#results-and-discussion",
     "title": "Lab 2 Report",
     "section": "Results and Discussion",
-    "text": "Results and Discussion\n\nTestbench Simulation\n\ntop Module\n\n\n\n\n\n\nFigure 8: Testbench simulation results for top module. The simulation shows outputs match expected outputs for all asserts\n\n\n\nThe design met all intended design objectives. Figure 8 shows a screenshot of the QuestaSim simulation for the top module’s testbench tb_top. The simulated outputs of led match the ledexpected output. Note that not all the tested inputs of led are shown in this image. The outputs of top: seg, trans0, and trans1 are not shown in this testbench because they rely on the mpx module which uses the HSOSC clock to provide the sel output. The outputs for seg are tested in the sevseg testbench while trans0 and trans1 are tested in the mpx testbench.\n\n\nsevseg Module\n\n\n\n\n\n\nFigure 9: Testbench simulation results for the sevseg module. The simulation shows outputs match expected outputs for all testvectors\n\n\n\nFigure 9 shows a screenshot of the QuestaSim simulation for the sevseg module’s testbench tb_sevseg. The simulated outputs of seg match the expected outputs.\n\n\nmpx Module\n\n\n\n\n\n\nFigure 10: Testbench simulation results for the mpx module for before the flip. The simulation shows outputs match expected outputs for all asserts\n\n\n\nFigure 10 shows a screenshot of the QuestaSim simulation for the mpx module’s testbench tb_mpx to test that the sel, trans0, and trans1 output matches the expected outputs for before the alternation (aka flip). The simulated outputs of mpx match the expected outputs for before the flip.\n\n\n\n\n\n\nFigure 11: Testbench simulation results for the mpx module for after the flip. The simulation shows outputs match expected outputs for all testvectors\n\n\n\nFigure 11 shows a screenshot of the QuestaSim simulation for the mpx module’s testbench tb_mpx to test that the sel, trans0, and trans1 output matches the expected outputs for after the alternation (aka flip) that should occur when the counter reaches 200000. The simulated outputs of mpx match the expected outputs for after the flip and the flip happens when the counter reaches 200000."
+    "text": "Results and Discussion\n\nTestbench Simulation\n\ntop Module\n\n\n\n\n\n\nFigure 8: Testbench simulation results for top module showing the HSOSC toggling. The simulation shows outputs match expected outputs for all asserts\n\n\n\nThe design met all intended design objectives. Figure 8 shows a screenshot of the QuestaSim simulation for the top module’s testbench tb_top after approximately #10000 time units to show that the HSOSC toggles.\n\n\n\n\n\n\nFigure 9: Testbench simulation results for top module showing the outputs for the LED. The simulation shows the LED outputs match expected outputs for all asserts\n\n\n\nAs shown in Figure 9, the simulated outputs of led match the ledexpected output. Note that not all the tested inputs of led are shown in this image. The outputs of top: seg, trans0, and trans1 are not tested in this testbench because they rely on the mpx module which uses the HSOSC clock to provide the transistor output and switch input into sevseg. The outputs for seg are tested in the sevseg testbench while trans0 and trans1 and the switch input into sevseg are tested in the mpx testbench.\n\n\nsevseg Module\n\n\n\n\n\n\nFigure 10: Testbench simulation results for the sevseg module. The simulation shows outputs match expected outputs for all testvectors\n\n\n\nFigure 10 shows a screenshot of the QuestaSim simulation for the sevseg module’s testbench tb_sevseg. The simulated outputs of seg match the expected outputs.\n\n\nmpx Module\n\n\n\n\n\n\nFigure 11: Testbench simulation results for the mpx module for before the flip. The simulation shows outputs match expected outputs for all asserts\n\n\n\nFigure 11 shows a screenshot of the QuestaSim simulation for the mpx module’s testbench tb_mpx to test that the s, trans0, and trans1 output matches the expected outputs for before the alternation (aka flip) at counter = 200000. Because we are before the flip, s should be the same as the s0 input and trans0 and trans1 should be 0 and 1 respectively. The simulated outputs of mpx match the expected outputs for before the flip and the counter is counting up.\n\n\n\n\n\n\nFigure 12: Testbench simulation results for the mpx module for after the flip. The simulation shows outputs match expected outputs for all testvectors\n\n\n\nFigure 12 shows a screenshot of the QuestaSim simulation for the mpx module’s testbench tb_mpx to test that the s, trans0, and trans1 output matches the expected outputs for after the alternation (aka flip) that should occur when the counter reaches 200000. Because we are after the flip, s should be the same as the s1 input and trans0 and trans1 should be 1 and 0 respectively. The simulated outputs of mpx match the expected outputs for after the flip and the flip happens when the counter reaches 200000. The reset of the counter after count reaches 200000 is also visualized."
   },
   {
     "objectID": "labs/lab2/lab2.html#conclusion",
@@ -145,19 +152,5 @@
     "title": "Lab 2 Report",
     "section": "Conclusion",
     "text": "Conclusion\nThe design successfully displayed two individual digits on the dual 7-segment display using only one sevseg module. The 5 LEDs also successfully display the sum of the two inputs. There is no bleeding between the digits or flickering and the 7-segment display does not dim depending on which numbers are displayed. The digits are also upright to the viewer."
-  },
-  {
-    "objectID": "labs/lab2/lab2.html#ai-prototype-and-reflection",
-    "href": "labs/lab2/lab2.html#ai-prototype-and-reflection",
-    "title": "Lab 2 Report",
-    "section": "AI Prototype and Reflection",
-    "text": "AI Prototype and Reflection"
-  },
-  {
-    "objectID": "labs/lab2/lab2.html#lab-hours",
-    "href": "labs/lab2/lab2.html#lab-hours",
-    "title": "Lab 2 Report",
-    "section": "",
-    "text": "I spent 20 hours on this lab."
   }
 ]
