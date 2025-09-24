@@ -2,12 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.40">
+<meta name="generator" content="quarto-1.7.32">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Erin Wang">
+<meta name="dcterms.date" content="2025-09-23">
 
-<title>lab3 – E155 Portfolio</title>
+<title>Lab 3 Report – E155 Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,15 +32,16 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-ddd961a2510921635943dfbbd19534c4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dfb324f25d9b1687192fa8be62ac8f9c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -100,7 +103,7 @@ window.Quarto = {
 <link rel="stylesheet" href="../../styles.css">
 </head>
 
-<body class="nav-fixed">
+<body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -164,253 +167,538 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#lab-hours" id="toc-lab-hours" class="nav-link active" data-scroll-target="#lab-hours">Lab Hours</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#design-and-testing-methodology" id="toc-design-and-testing-methodology" class="nav-link" data-scroll-target="#design-and-testing-methodology">Design and Testing Methodology</a>
+  <ul class="collapse">
+  <li><a href="#dual-display-with-one-7-segment-module" id="toc-dual-display-with-one-7-segment-module" class="nav-link" data-scroll-target="#dual-display-with-one-7-segment-module">Dual Display with one 7-Segment Module</a></li>
+  <li><a href="#resistor-choice-for-7-segment-display" id="toc-resistor-choice-for-7-segment-display" class="nav-link" data-scroll-target="#resistor-choice-for-7-segment-display">Resistor choice for 7-segment Display</a></li>
+  <li><a href="#resistor-choice-for-transistors" id="toc-resistor-choice-for-transistors" class="nav-link" data-scroll-target="#resistor-choice-for-transistors">Resistor choice for transistors</a></li>
+  <li><a href="#resistor-choice-for-keypad-inputs" id="toc-resistor-choice-for-keypad-inputs" class="nav-link" data-scroll-target="#resistor-choice-for-keypad-inputs">Resistor choice for keypad inputs</a></li>
+  <li><a href="#debounce-design-and-fsm-diagrams" id="toc-debounce-design-and-fsm-diagrams" class="nav-link" data-scroll-target="#debounce-design-and-fsm-diagrams">Debounce design and FSM diagrams</a></li>
+  </ul></li>
+  <li><a href="#technical-documentation" id="toc-technical-documentation" class="nav-link" data-scroll-target="#technical-documentation">Technical Documentation</a>
+  <ul class="collapse">
+  <li><a href="#block-diagram" id="toc-block-diagram" class="nav-link" data-scroll-target="#block-diagram">Block Diagram</a></li>
+  </ul></li>
+  <li><a href="#schematic" id="toc-schematic" class="nav-link" data-scroll-target="#schematic">Schematic</a></li>
+  <li><a href="#results-and-discussion" id="toc-results-and-discussion" class="nav-link" data-scroll-target="#results-and-discussion">Results and Discussion</a>
+  <ul class="collapse">
+  <li><a href="#testbench-simulation" id="toc-testbench-simulation" class="nav-link" data-scroll-target="#testbench-simulation">Testbench Simulation</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#ai-prototype-and-reflection" id="toc-ai-prototype-and-reflection" class="nav-link" data-scroll-target="#ai-prototype-and-reflection">AI Prototype and Reflection</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lab 3 Report</h1>
+</div>
 
 
 
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Erin Wang </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 23, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="lab-hours" class="level2">
+<h2 class="anchored" data-anchor-id="lab-hours">Lab Hours</h2>
+<p>I spent 60 hours on this lab.</p>
+</section>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>Lab 3 involved learning how to synchronize asynchronous inputs from a 4x4 keypad and use FSMs for memory to display the most recent input from the keypad as the right digit of a dual 7-segment display and the last input as the left digit.</p>
+</section>
+<section id="design-and-testing-methodology" class="level2">
+<h2 class="anchored" data-anchor-id="design-and-testing-methodology">Design and Testing Methodology</h2>
+<section id="dual-display-with-one-7-segment-module" class="level3">
+<h3 class="anchored" data-anchor-id="dual-display-with-one-7-segment-module">Dual Display with one 7-Segment Module</h3>
+<p>In order to display two independent hexadecimal numbers on the dual 7-segment display using only one <code>sevseg</code> module, the trick was to send the same output to both digits but alternate between turning on the first digit and the second digit fast enough that the different digits are seen at the same time to our eyes (~60 Hz). To alternate between the two, the on-board high-speed oscillator (HSOSC) from the iCE40 UltraPlus primitive library was used to generate a clock signal at 24 MHz then a counter was used to divide the high frequency clock signal into a 60 Hz signal.</p>
+<div id="fig-countercalc" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-countercalc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/lab2_countercalc.jpg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-countercalc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: The calculation for the counter to make the inputs and output powers alternate at 60 Hz.
+</figcaption>
+</figure>
+</div>
+<p>The calculation in <a href="#fig-countercalc" class="quarto-xref">Figure&nbsp;1</a> derived that the counter needed to reach 200000 before setting the multiplexer select HIGH in order switch between the two inputs and turning on the two outputs at 60 Hz. For example, if the first digit should read 1 and then second digit should read 5, then when <code>clk</code> is <code>LOW</code>, the program takes 1 as the input and sends 1 to both digits’ outputs. Then, the program turns only the first digit’s power on and turns the other digit’s power off. When <code>clk</code> is <code>HIGH</code>, the program takes 5 as the input and sends 5 to both digits’ outputs. Then the program turns the second digit’s power on and turns the first digit’s power off. This switch happens fast enough that the human eye sees both individual digits on the display.</p>
+</section>
+<section id="resistor-choice-for-7-segment-display" class="level3">
+<h3 class="anchored" data-anchor-id="resistor-choice-for-7-segment-display">Resistor choice for 7-segment Display</h3>
+<div id="fig-sevsegcalc" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sevsegcalc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/lab2_sevsegcalc.jpg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sevsegcalc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: The calculation for the 7-segment current-limiting resistors using a V_f of 1.9V from the MAN4600 datasheet.
+</figcaption>
+</figure>
+</div>
+<p>The calculation in <a href="#fig-sevsegcalc" class="quarto-xref">Figure&nbsp;2</a> derived 1kΩ as an appropriate resistor to provide ~1.2 mA to the LED segments of the 7-segment display. The drop in voltage from the emitter is due to the emitter saturation voltage. Thus the voltage going into the segment displays is 3.1 V.</p>
+</section>
+<section id="resistor-choice-for-transistors" class="level3">
+<h3 class="anchored" data-anchor-id="resistor-choice-for-transistors">Resistor choice for transistors</h3>
+<div id="fig-transcalc" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-transcalc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/lab2_transcalc.jpg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-transcalc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: The calculation for the transistor current-limiting resistors using a V_f of 0.7V for the emitter diode such that the base voltage is 2.6V.
+</figcaption>
+</figure>
+</div>
+<p>The calculation in <a href="#fig-transcalc" class="quarto-xref">Figure&nbsp;3</a> derived 2.7kΩ as an appropriate resistor (stock-room available) to provide less than 1 mA to FPGA I/O pins.</p>
+</section>
+<section id="resistor-choice-for-keypad-inputs" class="level3">
+<h3 class="anchored" data-anchor-id="resistor-choice-for-keypad-inputs">Resistor choice for keypad inputs</h3>
+<p>In order to read the keypad keys, I chose to have my columns as one of my <code>top</code> module’s outputs. This means my program drives power to the columns and checks the rows for a press. I also chose to implement an active <code>HIGH</code> keypad, which means I needed pulldown resistors for the row inputs such that when there is no activity, the rows read <code>4'b0000</code>. I chose 680Ω as the resistors to be large enough so as to not draw too much current from the FPGA pins and small enough to quickly pull down the signal and act as a pulldown resistor.</p>
+</section>
+<section id="debounce-design-and-fsm-diagrams" class="level3">
+<h3 class="anchored" data-anchor-id="debounce-design-and-fsm-diagrams">Debounce design and FSM diagrams</h3>
+<p>One of the mechanical issues with the keypad buttons is that the buttons “bounce” when pressed. I chose to debounce my keypad buttons using an 3-state FSM that waits for a button to be pressed, then when the button was pressed the FSM would enter a state that waits for a counter to reach high enough that the button would have stabilized, then when the counter reaches a set number the FSM would enter a state that waits for the button to be released.</p>
+<p><img src="images/lab3_scanfsm.jpg" id="fig-scanfsm" class="img-fluid" alt="Scanner FSM state transition diagram and state transition table."> <img src="images/lab3_debdigfsm.jpg" id="fig-tbdebdigfsm" class="img-fluid" alt="Debouncer and Digit FSM state transition diagram and state transition table."></p>
+<p>The images above detail the design of the three FSMs that I used in my overall implementation. One FSM was to switch between scanning for rows and holding when a key was pressed (<strong>?@fig-scanfsm</strong>). Another FSM was the debouncing FSM to only register the keypress once (<strong>?@fig-tbdebdigfsm</strong>). And the digit FSM was for switching between updating the digits and not updating the digits (<strong>?@fig-tbdebdigfsm</strong>). The FSM is a simple strategy to store an input in “memory” and use this memory to decide what to do at the next clock cycle. However, some of the tradeoffs with the FSM is that the inputs and timing can get really tricky especially in this lab where multiple FSMs needed to communicate with each other.</p>
+</section>
+</section>
+<section id="technical-documentation" class="level2">
+<h2 class="anchored" data-anchor-id="technical-documentation">Technical Documentation</h2>
+<p>The source code for the project can be found in the associated <a href="https://github.com/erinlywang/e155-lab3">Github repository</a></p>
+<section id="block-diagram" class="level3">
+<h3 class="anchored" data-anchor-id="block-diagram">Block Diagram</h3>
+<div id="fig-block" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-block-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/lab3_block.jpg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-block-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Block diagram showing the top module and the submodules <code>HSOSC</code>, <code>scanner</code>, <code>debouncer</code>, <code>synchronizer</code>, <code>digit,</code>keypad<code>,</code>mpx<code>, and</code>sevseg`.
+</figcaption>
+</figure>
+</div>
+<p>The block diagram in <a href="#fig-block" class="quarto-xref">Figure&nbsp;4</a> demonstrates the overall architecture of the design. The top-level module <code>top</code> includes 8 submodules: the high-speed oscillator block (<code>HSOSC</code>), the scanner to check for keypad presses, the debouncer to debounce the button presses, the synchronizer to synchronizer the <code>row</code> and <code>col</code> signals, the digit module to send the debounced signal either to the right digit and send the previous right digit to the left digit, the keypad module to decode a <code>row</code> and <code>col</code> pair into a key on the keypad, and finally the multiplexer to alternate at 60 Hz (<code>mpx</code>) and the 7-segment display module from Lab 1 (<code>sevseg</code>).</p>
+</section>
+</section>
+<section id="schematic" class="level2">
+<h2 class="anchored" data-anchor-id="schematic">Schematic</h2>
+<div id="fig-schematic" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-schematic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/lab3_schematic.jpg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-schematic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Schematic of the layout not including the the reset button (P43). The diodes of each digit of the 7-segment display share a common anode.
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-schematic" class="quarto-xref">Figure&nbsp;5</a> shows the physical layout of the design. The output 7-segment diodes were connected using a 1kΩ current-limiting resistor to ensure the output current (~1.4 mA) did not exceed the maximum output current of the FPGA I/O pins. The figure also shows which pin number of the dual display corresponds to which segment (i.e.&nbsp;A1,A2,B1, B2…) of the 7-segment display.</p>
+<div id="fig-sevsegletters" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sevsegletters-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/seven_seg_map.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sevsegletters-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Diagram of the letter assignment for the 7-segment display.
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-sevsegletters" class="quarto-xref">Figure&nbsp;6</a> depicts the assignment of letters to a digit of the output display. In the program, seg[0] corresponds to a, seg[1] to b, and so on.</p>
+</section>
+<section id="results-and-discussion" class="level2">
+<h2 class="anchored" data-anchor-id="results-and-discussion">Results and Discussion</h2>
+<section id="testbench-simulation" class="level3">
+<h3 class="anchored" data-anchor-id="testbench-simulation">Testbench Simulation</h3>
+<section id="top-module-hsosc-implied" class="level4">
+<h4 class="anchored" data-anchor-id="top-module-hsosc-implied"><code>top</code> Module (<code>HSOSC</code> implied)</h4>
+<div id="fig-tbtop" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-tbtop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/lab3_tbtop.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tbtop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Testbench simulation results for top module. The simulation shows outputs match expected outputs for all asserts
+</figcaption>
+</figure>
+</div>
+<p>The design met all intended design objectives. <a href="#fig-tbtop" class="quarto-xref">Figure&nbsp;7</a> shows a screenshot of the QuestaSim simulation for the <code>top</code> module’s testbench <code>tb_top</code>. Because all the outputs depend on <code>HSOSC</code> it can be assumed that <code>HSOSC</code> toggles. As shown in <a href="#fig-tbtop" class="quarto-xref">Figure&nbsp;7</a>, the simulated outputs of <code>seg</code> change when expected in relation to the <code>led0</code> which holds the value for whether the button is debounced and <code>counter</code> from the <code>mpx</code> module which updates what key to send to the <code>seg</code> module. <code>seg</code> is expected then to change after the button is debounced (db/counter reaches 500000) and the mpx sends <code>seg</code> the key to output (db/mpx reaches 200000). I wrote tests for all 16 keys that <code>seg</code> matches expected for when the button is pressed, when another button is pressed while the first one is still pressed, and when the button is released. Although not pictured, the testbench passed all tests for all 16 keys.</p>
+</section>
+<section id="scanner-module" class="level4">
+<h4 class="anchored" data-anchor-id="scanner-module"><code>scanner</code> Module</h4>
+<div id="fig-tbscanner" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-tbscanner-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/lab3_tbscanner.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tbscanner-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: Testbench simulation results for scanner module. The simulation shows outputs match expected outputs for all asserts
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-tbscanner" class="quarto-xref">Figure&nbsp;8</a> shows that the <code>scanner</code> module reaches all scanning states when no row is input and reaches all pressed states when a row is input at the corresponding column. At the end of the simulation, the image shows that the scanner module also correctly stays in the PRESSED state even when a new input key is pressed while the first key is held.</p>
+</section>
+<section id="debouncer-module" class="level4">
+<h4 class="anchored" data-anchor-id="debouncer-module"><code>debouncer</code> Module</h4>
+<div id="fig-tbdebouncerS1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-tbdebouncerS1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/lab3_tbdebouncerS1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tbdebouncerS1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: Testbench simulation results for debouncer module. The simulation shows the correct states as expected with the set inputs.
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-tbdebouncerS1" class="quarto-xref">Figure&nbsp;9</a> shows that the <code>debouncer</code> module moves from S0 (waiting for key press) to S1 when a key is registered and correctly stays in the S1 state of waiting for <code>debounced</code> to go high (<code>counter</code> to reach 500000) even when a new input key is pressed while the first key is held.</p>
+<div id="fig-tbdebouncerS2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-tbdebouncerS2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/lab3_tbdebouncerS2.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tbdebouncerS2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10: Testbench simulation results for debouncer module. The simulation shows the correct states as expected with the set inputs.
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-tbdebouncerS2" class="quarto-xref">Figure&nbsp;10</a> shows that the <code>debouncer</code> module moves from S1 (waiting for <code>debounced</code>) to S2 when <code>debounced</code> goes high and stays in the S2 state of waiting for the button to be released even when a new input key is pressed while the first key is held. The FSM also correctly moves back to S0 when the button is released (<code>row</code> input is <code>4'b0000</code>). <code>debounced</code> also correctly goes high after the counter counts up to 500000.</p>
+</section>
+<section id="synchronizer-module" class="level4">
+<h4 class="anchored" data-anchor-id="synchronizer-module"><code>synchronizer</code> Module</h4>
+<p><img src="images/lab3_tbsync.png" id="fig-tbsync" class="img-fluid" alt="Testbench simulation results for synchronizer module. The simulation shows outputs match expected outputs for all asserts."> <strong>?@fig-tbsync</strong> shows that the <code>synchronizer</code> module correctly transfers the asynchronous input to the synchronized output after 4 clock cycles. The choice of 4 clock cycles was for the synchronized output to match the right SCANNING state in the <code>scanner</code> module, and there are 4 scanning states to run through in the scanning cycle.</p>
+</section>
+<section id="digit-module" class="level4">
+<h4 class="anchored" data-anchor-id="digit-module"><code>digit</code> Module</h4>
+<p><img src="images/lab3_tbdigit.png" id="fig-tbdigit" class="img-fluid" alt="Testbench simulation results for digit module. The simulation shows outputs match expected outputs for all asserts."> <strong>?@fig-tbdigit</strong> shows that the <code>digit</code> module visits all 3 states. The module correctly does not transfer any information when in the <code>NOUPDATE</code> state and correctly transfers the most recent input only to the right row/col and updates the left row/col with the previous values of the right row/col in the <code>UPDATE</code> state. The module also correctly only updates the right and left rows/cols by moving to the <code>FINISHEDUPDATE</code> state after updating once as well as returns to <code>NOUPDATE</code> when the <code>debounced</code> signal goes back to 0 (<code>debouncer</code> module is back to waiting for a button to be pressed).</p>
+</section>
+<section id="keypad-module" class="level4">
+<h4 class="anchored" data-anchor-id="keypad-module"><code>keypad</code> Module</h4>
+<p><img src="images/lab3_tbkeypad.png" id="fig-tbkeypad" class="img-fluid" alt="Testbench simulation results for keypad module. The simulation shows outputs match expected outputs for all asserts."> <strong>?@fig-tbkeypad</strong> shows that the <code>keypad</code> module correctly matches a row and column pair to its corresponding key on the 4x4 keypad.</p>
+</section>
+<section id="sevseg-module" class="level4">
+<h4 class="anchored" data-anchor-id="sevseg-module"><code>sevseg</code> Module</h4>
+<div id="fig-tbsevseg" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-tbsevseg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/lab2_tbsevseg.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tbsevseg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11: Testbench simulation results for the sevseg module. The simulation shows outputs match expected outputs for all testvectors
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-tbsevseg" class="quarto-xref">Figure&nbsp;11</a> shows a screenshot of the QuestaSim simulation for the <code>sevseg</code> module’s testbench <code>tb_sevseg</code>. The simulated outputs of <code>seg</code> match the expected outputs.</p>
+</section>
+<section id="mpx-module" class="level4">
+<h4 class="anchored" data-anchor-id="mpx-module"><code>mpx</code> Module</h4>
+<div id="fig-tbmpx0" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-tbmpx0-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/lab2_tbmpxCOUNTLOW.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tbmpx0-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12: Testbench simulation results for the mpx module for before the flip. The simulation shows outputs match expected outputs for all asserts
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-tbmpx0" class="quarto-xref">Figure&nbsp;12</a> shows a screenshot of the QuestaSim simulation for the <code>mpx</code> module’s testbench <code>tb_mpx</code> to test that the <code>s</code>, <code>trans0</code>, and <code>trans1</code> output matches the expected outputs for before the alternation (aka flip) at <code>counter = 200000</code>. Because we are before the flip, <code>s</code> should be the same as the <code>s0</code> input and <code>trans0</code> and <code>trans1</code> should be 0 and 1 respectively. The simulated outputs of <code>mpx</code> match the expected outputs for before the flip and the counter is counting up.</p>
+<div id="fig-tbmpx1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-tbmpx1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/lab2_tbmpxCOUNTHIGH.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tbmpx1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13: Testbench simulation results for the mpx module for after the flip. The simulation shows outputs match expected outputs for all testvectors
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-tbmpx1" class="quarto-xref">Figure&nbsp;13</a> shows a screenshot of the QuestaSim simulation for the <code>mpx</code> module’s testbench <code>tb_mpx</code> to test that the <code>s</code>, <code>trans0</code>, and <code>trans1</code> output matches the expected outputs for after the alternation (aka flip) that should occur when the counter reaches 200000. Because we are after the flip, <code>s</code> should be the same as the <code>s1</code> input and <code>trans0</code> and <code>trans1</code> should be 1 and 0 respectively. The simulated outputs of <code>mpx</code> match the expected outputs for after the flip and the flip happens when the counter reaches 200000. The reset of the counter after <code>count</code> reaches 200000 is also visualized.</p>
+</section>
+</section>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>The design successfully read inputs from the 4x4 keypad and displayed the most recent input on the right digit of a dual 7-segment display and the last input on the left digit. The design does not lock up when multiple buttons are pressed. Each button press is only registered once and the 7-segment displays are the same brightness. The design has no latchesor tristate buffers. The design also uses synchronizers and only registers the first button press if additional buttons are pressed down while holding down one button. There is no bleeding between the digits or flickering and the 7-segment display does not dim depending on which numbers are displayed. The digits are also upright to the viewer.</p>
+<p>Overall a success!</p>
+</section>
+<section id="ai-prototype-and-reflection" class="level2">
+<h2 class="anchored" data-anchor-id="ai-prototype-and-reflection">AI Prototype and Reflection</h2>
 
 
 
-
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
-window.document.addEventListener("DOMContentLoaded", function (event) {
-  const toggleBodyColorMode = (bsSheetEl) => {
-    const mode = bsSheetEl.getAttribute("data-mode");
-    const bodyEl = window.document.querySelector("body");
-    if (mode === "dark") {
-      bodyEl.classList.add("quarto-dark");
-      bodyEl.classList.remove("quarto-light");
-    } else {
-      bodyEl.classList.add("quarto-light");
-      bodyEl.classList.remove("quarto-dark");
-    }
-  }
-  const toggleBodyColorPrimary = () => {
-    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-    if (bsSheetEl) {
-      toggleBodyColorMode(bsSheetEl);
-    }
-  }
-  toggleBodyColorPrimary();  
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
-  const isCodeAnnotation = (el) => {
-    for (const clz of el.classList) {
-      if (clz.startsWith('code-annotation-')) {                     
-        return true;
-      }
-    }
-    return false;
-  }
-  const onCopySuccess = function(e) {
-    // button target
-    const button = e.trigger;
-    // don't keep focus
-    button.blur();
-    // flash "checked"
-    button.classList.add('code-copy-button-checked');
-    var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
-    let tooltip;
-    if (window.bootstrap) {
-      button.setAttribute("data-bs-toggle", "tooltip");
-      button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
-      tooltip = new bootstrap.Tooltip(button, 
-        { trigger: "manual", 
-          customClass: "code-copy-button-tooltip",
-          offset: [0, -8]});
-      tooltip.show();    
-    }
-    setTimeout(function() {
-      if (tooltip) {
-        tooltip.hide();
-        button.removeAttribute("data-bs-title");
-        button.removeAttribute("data-bs-toggle");
-        button.removeAttribute("data-bs-placement");
-      }
-      button.setAttribute("title", currentTitle);
-      button.classList.remove('code-copy-button-checked');
-    }, 1000);
-    // clear code selection
-    e.clearSelection();
-  }
-  const getTextToCopy = function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-    text: getTextToCopy
-  });
-  clipboard.on('success', onCopySuccess);
-  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-      text: getTextToCopy,
-      container: window.document.getElementById('quarto-embedded-source-code-modal')
-    });
-    clipboardModal.on('success', onCopySuccess);
-  }
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-    var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/erinlywang\.github\.io\/e155-quarto-portfolio\/");
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-        // undo the damage that might have been done by quarto-nav.js in the case of
-        // links that we want to consider external
-        if (link.dataset.originalHref !== undefined) {
-          link.href = link.dataset.originalHref;
-        }
-          // default icon
-          link.classList.add("external");
-      }
-    }
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-    const config = {
-      allowHTML: true,
-      maxWidth: 500,
-      delay: 100,
-      arrow: false,
-      appendTo: function(el) {
-          return el.parentElement;
-      },
-      interactive: true,
-      interactiveBorder: 10,
-      theme: 'quarto',
-      placement: 'bottom-start',
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
     };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
-    window.tippy(el, config); 
-  }
-  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-  for (var i=0; i<noterefs.length; i++) {
-    const ref = noterefs[i];
-    tippyHover(ref, function() {
-      // use id or data attribute instead here
-      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-      try { href = new URL(href).hash; } catch {}
-      const id = href.replace(/^#\/?/, "");
-      const note = window.document.getElementById(id);
-      if (note) {
-        return note.innerHTML;
-      } else {
-        return "";
-      }
-    });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    // Strip column container classes
-    const stripColumnClz = (el) => {
-      el.classList.remove("page-full", "page-columns");
-      if (el.children) {
-        for (const child of el.children) {
-          stripColumnClz(child);
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
         }
       }
+      return false;
     }
-    stripColumnClz(note)
-    if (id === null || id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        container.appendChild(note.children[0].cloneNode(true));
-        for (let i = 1; i < note.children.length; i++) {
-          const child = note.children[i];
-          if (child.tagName === "P" && child.innerText === "") {
-            continue;
-          } else {
-            container.appendChild(child.cloneNode(true));
-            break;
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
           }
         }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // default icon
+            link.classList.add("external");
         }
-        return container.innerHTML
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
       } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
         if (window.Quarto?.typesetMath) {
           window.Quarto.typesetMath(note);
         }
-        return note.innerHTML;
-      }
-    } else {
-      // Remove any anchor links if they are present
-      const anchorLink = note.querySelector('a.anchorjs-link');
-      if (anchorLink) {
-        anchorLink.remove();
-      }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
-      if (note.classList.contains("callout")) {
-        return note.outerHTML;
-      } else {
-        return note.innerHTML;
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
       }
     }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      if (url.startsWith('#')) {
-        hash = url;
-      } else {
-        try { hash = new URL(url).hash; } catch {}
-      }
-      if (hash) {
-        const id = hash.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note !== null) {
-          try {
-            const html = processXRef(id, note.cloneNode(true));
-            instance.setContent(html);
-          } finally {
-            instance.enable();
-            instance.show();
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
           }
         } else {
-          // See if we can fetch this
-          fetch(url.split('#')[0])
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
           .then(res => res.text())
           .then(html => {
             const parser = new DOMParser();
             const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.getElementById(id);
+            const note = htmlDoc.querySelector('main.content');
             if (note !== null) {
-              const html = processXRef(id, note);
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
               instance.setContent(html);
             } 
           }).finally(() => {
@@ -418,185 +706,161 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             instance.show();
           });
         }
-      } else {
-        // See if we can fetch a full url (with no hash to target)
-        // This is a special case and we should probably do some content thinning / targeting
-        fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.querySelector('main.content');
-          if (note !== null) {
-            // This should only happen for chapter cross references
-            // (since there is no id in the URL)
-            // remove the first header
-            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-              note.children[0].remove();
-            }
-            const html = processXRef(null, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
-      }
-    }, function(instance) {
-    });
-  }
-      let selectedAnnoteEl;
-      const selectorForAnnotation = ( cell, annotation) => {
-        let cellAttr = 'data-code-cell="' + cell + '"';
-        let lineAttr = 'data-code-annotation="' +  annotation + '"';
-        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
-        return selector;
-      }
-      const selectCodeLines = (annoteEl) => {
-        const doc = window.document;
-        const targetCell = annoteEl.getAttribute("data-target-cell");
-        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
-        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
-        const lineIds = lines.map((line) => {
-          return targetCell + "-" + line;
-        })
-        let top = null;
-        let height = null;
-        let parent = null;
-        if (lineIds.length > 0) {
-            //compute the position of the single el (top and bottom and make a div)
-            const el = window.document.getElementById(lineIds[0]);
-            top = el.offsetTop;
-            height = el.offsetHeight;
-            parent = el.parentElement.parentElement;
-          if (lineIds.length > 1) {
-            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-            height = bottom - top;
-          }
-          if (top !== null && height !== null && parent !== null) {
-            // cook up a div (if necessary) and position it 
-            let div = window.document.getElementById("code-annotation-line-highlight");
-            if (div === null) {
-              div = window.document.createElement("div");
-              div.setAttribute("id", "code-annotation-line-highlight");
-              div.style.position = 'absolute';
-              parent.appendChild(div);
-            }
-            div.style.top = top - 2 + "px";
-            div.style.height = height + 4 + "px";
-            div.style.left = 0;
-            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-            if (gutterDiv === null) {
-              gutterDiv = window.document.createElement("div");
-              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-              gutterDiv.style.position = 'absolute';
-              const codeCell = window.document.getElementById(targetCell);
-              const gutter = codeCell.querySelector('.code-annotation-gutter');
-              gutter.appendChild(gutterDiv);
-            }
-            gutterDiv.style.top = top - 2 + "px";
-            gutterDiv.style.height = height + 4 + "px";
-          }
-          selectedAnnoteEl = annoteEl;
-        }
-      };
-      const unselectCodeLines = () => {
-        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
-        elementsIds.forEach((elId) => {
-          const div = window.document.getElementById(elId);
-          if (div) {
-            div.remove();
-          }
-        });
-        selectedAnnoteEl = undefined;
-      };
-        // Handle positioning of the toggle
-    window.addEventListener(
-      "resize",
-      throttle(() => {
-        elRect = undefined;
-        if (selectedAnnoteEl) {
-          selectCodeLines(selectedAnnoteEl);
-        }
-      }, 10)
-    );
-    function throttle(fn, ms) {
-    let throttle = false;
-    let timer;
-      return (...args) => {
-        if(!throttle) { // first call gets through
-            fn.apply(this, args);
-            throttle = true;
-        } else { // all the others get throttled
-            if(timer) clearTimeout(timer); // cancel #2
-            timer = setTimeout(() => {
-              fn.apply(this, args);
-              timer = throttle = false;
-            }, ms);
-        }
-      };
-    }
-      // Attach click handler to the DT
-      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-      for (const annoteDlNode of annoteDls) {
-        annoteDlNode.addEventListener('click', (event) => {
-          const clickedEl = event.target;
-          if (clickedEl !== selectedAnnoteEl) {
-            unselectCodeLines();
-            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-            if (activeEl) {
-              activeEl.classList.remove('code-annotation-active');
-            }
-            selectCodeLines(clickedEl);
-            clickedEl.classList.add('code-annotation-active');
-          } else {
-            // Unselect the line
-            unselectCodeLines();
-            clickedEl.classList.remove('code-annotation-active');
-          }
-        });
-      }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
-        };
-      } else {
-        return findCites(el.parentElement)
-      }
-    } else {
-      return undefined;
-    }
-  };
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
-          }
-          popup.appendChild(citeDiv);
-        });
-        return popup.innerHTML;
+      }, function(instance) {
       });
     }
-  }
-});
-</script>
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
 </div> <!-- /content -->
 
 

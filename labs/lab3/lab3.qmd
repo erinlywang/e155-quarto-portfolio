@@ -31,10 +31,13 @@ The calculation in @fig-transcalc derived 2.7kΩ as an appropriate resistor (sto
 ### Resistor choice for keypad inputs
 In order to read the keypad keys, I chose to have my columns as one of my `top` module's outputs. This means my program drives power to the columns and checks the rows for a press. I also chose to implement an active `HIGH` keypad, which means I needed pulldown resistors for the row inputs such that when there is no activity, the rows read `4'b0000`. I chose 680Ω as the resistors to be large enough so as to not draw too much current from the FPGA pins and small enough to quickly pull down the signal and act as a pulldown resistor. 
 
-### Debounce design
+### Debounce design and FSM diagrams
 One of the mechanical issues with the keypad buttons is that the buttons "bounce" when pressed. I chose to debounce my keypad buttons using an 3-state FSM that waits for a button to be pressed, then when the button was pressed the FSM would enter a state that waits for a counter to reach high enough that the button would have stabilized, then when the counter reaches a set number the FSM would enter a state that waits for the button to be released.
 
-The images above detail the design of the FSM. The FSM is a simple strategy to store an input in "memory" and use this memory to decide what to do at the next clock cycle. However, some of the tradeoffs with the FSM is that the inputs and timing can get really tricky especially in this lab where multiple FSMs needed to communicate with each other. 
+![Scanner FSM state transition diagram and state transition table.](images/lab3_scanfsm.jpg){#fig-scanfsm}
+![Debouncer and Digit FSM state transition diagram and state transition table.](images/lab3_debdigfsm.jpg){#fig-tbdebdigfsm}
+
+The images above detail the design of the three FSMs that I used in my overall implementation. One FSM was to switch between scanning for rows and holding when a key was pressed (@fig-scanfsm). Another FSM was the debouncing FSM to only register the keypress once (@fig-tbdebdigfsm). And the digit FSM was for switching between updating the digits and not updating the digits (@fig-tbdebdigfsm). The FSM is a simple strategy to store an input in "memory" and use this memory to decide what to do at the next clock cycle. However, some of the tradeoffs with the FSM is that the inputs and timing can get really tricky especially in this lab where multiple FSMs needed to communicate with each other. 
 
 ## Technical Documentation
 The source code for the project can be found in the associated [Github repository](https://github.com/erinlywang/e155-lab3)
@@ -67,11 +70,13 @@ The design met all intended design objectives. @fig-tbtop shows a screenshot of 
 @fig-tbscanner shows that the `scanner` module reaches all scanning states when no row is input and reaches all pressed states when a row is input at the corresponding column. At the end of the simulation, the image shows that the scanner module also correctly stays in the PRESSED state even when a new input key is pressed while the first key is held. 
 
 #### `debouncer` Module
-![Testbench simulation results for debouncer module. The simulation shows the correct states as expected with the set inputs.](images/lab3_tbdebouncerS1.png){#fig-tbdebS1}
-@fig-tbdebS1 shows that the `debouncer` module moves from S0 (waiting for key press) to S1 when a key is registered and correctly stays in the S1 state of waiting for `debounced` to go high (`counter` to reach 500000) even when a new input key is pressed while the first key is held. 
+![Testbench simulation results for debouncer module. The simulation shows the correct states as expected with the set inputs.](images/lab3_tbdebouncerS1.png){#fig-tbdebouncerS1}
 
-![Testbench simulation results for debouncer module. The simulation shows the correct states as expected with the set inputs.](images/lab3_tbdebouncerS2.png){#fig-tbdebS2}
-@fig-tbdebS2 shows that the `debouncer` module moves from S1 (waiting for `debounced`) to S2 when `debounced` goes high and stays in the S2 state of waiting for the button to be released even when a new input key is pressed while the first key is held. The FSM also correctly moves back to S0 when the button is released (`row` input is `4'b0000`). `debounced` also correctly goes high after the counter counts up to 500000.
+@fig-tbdebouncerS1 shows that the `debouncer` module moves from S0 (waiting for key press) to S1 when a key is registered and correctly stays in the S1 state of waiting for `debounced` to go high (`counter` to reach 500000) even when a new input key is pressed while the first key is held. 
+
+![Testbench simulation results for debouncer module. The simulation shows the correct states as expected with the set inputs.](images/lab3_tbdebouncerS2.png){#fig-tbdebouncerS2}
+
+@fig-tbdebouncerS2 shows that the `debouncer` module moves from S1 (waiting for `debounced`) to S2 when `debounced` goes high and stays in the S2 state of waiting for the button to be released even when a new input key is pressed while the first key is held. The FSM also correctly moves back to S0 when the button is released (`row` input is `4'b0000`). `debounced` also correctly goes high after the counter counts up to 500000.
 
 #### `synchronizer` Module
 ![Testbench simulation results for synchronizer module. The simulation shows outputs match expected outputs for all asserts.](images/lab3_tbsync.png){#fig-tbsync}
