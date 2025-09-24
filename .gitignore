@@ -2,3 +2,5 @@
 _site/
 /.quarto/
 Thumbs.db
+
+**/*.quarto_ipynb

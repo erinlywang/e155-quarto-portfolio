@@ -35,6 +35,7 @@ In order to read the keypad keys, I chose to have my columns as one of my `top` 
 One of the mechanical issues with the keypad buttons is that the buttons "bounce" when pressed. I chose to debounce my keypad buttons using an 3-state FSM that waits for a button to be pressed, then when the button was pressed the FSM would enter a state that waits for a counter to reach high enough that the button would have stabilized, then when the counter reaches a set number the FSM would enter a state that waits for the button to be released.
 
 ![Scanner FSM state transition diagram and state transition table.](images/lab3_scanfsm.jpg){#fig-scanfsm}
+
 ![Debouncer and Digit FSM state transition diagram and state transition table.](images/lab3_debdigfsm.jpg){#fig-tbdebdigfsm}
 
 The images above detail the design of the three FSMs that I used in my overall implementation. One FSM was to switch between scanning for rows and holding when a key was pressed (@fig-scanfsm). Another FSM was the debouncing FSM to only register the keypress once (@fig-tbdebdigfsm). And the digit FSM was for switching between updating the digits and not updating the digits (@fig-tbdebdigfsm). The FSM is a simple strategy to store an input in "memory" and use this memory to decide what to do at the next clock cycle. However, some of the tradeoffs with the FSM is that the inputs and timing can get really tricky especially in this lab where multiple FSMs needed to communicate with each other. 
@@ -80,14 +81,17 @@ The design met all intended design objectives. @fig-tbtop shows a screenshot of 
 
 #### `synchronizer` Module
 ![Testbench simulation results for synchronizer module. The simulation shows outputs match expected outputs for all asserts.](images/lab3_tbsync.png){#fig-tbsync}
+
 @fig-tbsync shows that the `synchronizer` module correctly transfers the asynchronous input to the synchronized output after 4 clock cycles. The choice of 4 clock cycles was for the synchronized output to match the right SCANNING state in the `scanner` module, and there are 4 scanning states to run through in the scanning cycle. 
 
 #### `digit` Module
 ![Testbench simulation results for digit module. The simulation shows outputs match expected outputs for all asserts.](images/lab3_tbdigit.png){#fig-tbdigit}
+
 @fig-tbdigit shows that the `digit` module visits all 3 states. The module correctly does not transfer any information when in the `NOUPDATE` state and correctly transfers the most recent input only to the right row/col and updates the left row/col with the previous values of the right row/col in the `UPDATE` state. The module also correctly only updates the right and left rows/cols by moving to the `FINISHEDUPDATE` state after updating once as well as returns to `NOUPDATE` when the `debounced` signal goes back to 0 (`debouncer` module is back to waiting for a button to be pressed).
 
 #### `keypad` Module
 ![Testbench simulation results for keypad module. The simulation shows outputs match expected outputs for all asserts.](images/lab3_tbkeypad.png){#fig-tbkeypad}
+
 @fig-tbkeypad shows that the `keypad` module correctly matches a row and column pair to its corresponding key on the 4x4 keypad.
 
 #### `sevseg` Module
@@ -111,3 +115,34 @@ The design successfully read inputs from the 4x4 keypad and displayed the most r
 Overall a success!
 
 ## AI Prototype and Reflection
+
+### Prototype A: Monolithic Prompt
+
+The Claude AI produced a code with 4 modules: a `keypad_top`  module that drives columns and checks rows, a `clk_divider` module that is used both for scanning and display,a `keypad_scanner` module that jumps from scanning the different columns to a key-hold state to a key-release state, and a `display controller` with time multiplexing to alterante between the digits of the disp_clk rate and also holds the 7-segment decoder of what segments to activate on the display. The code actually synthesized on the first try which suprised me. Usually it takes a couple errors fed back into the AI to get a synthesizable code. Something that was interesting to me was that the code in the `keypad_scanner` module saved the pressed key as an array with the active column and the input low row. I also thought that later in the same module, the output register had a really interesting implementation of having a variable holding whether the key is valid that relies on whether the next state is the `KEY_RELEASED` state. 
+
+<details> 
+
+<summary>Prototype A Scanner Register Code</summary>
+```
+always_ff @(posedge scan_clk or negedge rst_n) begin
+        if (!rst_n) begin
+            key_code  <= 4'h0;
+            key_valid <= 1'b0;
+        end else begin
+            key_valid <= (next_state == KEY_RELEASED);  // Pulse on key release
+            if (key_detected && (state != KEY_HELD)) begin
+                key_code <= pressed_key;
+            end
+        end
+    end
+```
+</details> 
+
+I thought this was an interesting implementation since I've always been taught to put this kind of logic in an always_comb and to add more states if needed rather than to put the logic in the flop register. I didn't use active-low in my design, but I heard many people had issues with getting one of the specs of holding down one button then pressing another button in the same column (if driving columns and checking rows) then releasing the first button and keeping the second button pressed and registering the second button once. The idea of a `key_valid` in the flop could possibly circumvent this, but it's hard to check without having an active-low hardware implementation to test on. 
+
+There were way less FSMs than in my implementation. The `keypad_scanner` module also used the slowed down clock from `clk_driver` to work the FSM state register. I believe this was to address the problem of debouncing which was different from my implementation of using an FSM. 
+
+### Prototype B: Modular Prompts
+This time the Claude AI produced 3 modules: `keypad_top`, `keypad_scanner`, and `keypad_oneshot`. However, the design did not synthesize due to the use of the `SB_HFOSC` module which we are not using. This was an issue I've run into in the first lab AI prototype. After telling the AI to use `HSOSC` instead, the code ran into another issue of instantiating unknown modules for `sevenSegment`. Feeding this into the AI caused the AI to build the module which then allowed the code to synthesize! 
+
+The debounce FSM was actually very similar to my own FSM with an `IDLE`, `DEBOUNCE`, `KEY_HELD`, and `WAIT_RELEASE` state. I actually ended up only using three states for idle, waiting for debounce, and waiting for release. In terms of synthesizability, the modular prompts needed more help and guidance to produce a synthesizable code. Because I'm more familiar with FSM structure, it was a little easier to follow than the monolithic prompt. However, the size of the code with so many FSMs does mean the readability decreases a bit. This could also be in part due to having all the modules on the same file. I had a lot of timing issues in my own code while debugging, and what I see with this code is that a lot of the variables that deal with FSM states are computed internally in the module when possible as opposed to grabbing the necessary input from other FSMs. The modular prompt also caused the clock dividing to be placed in the `keypad_top` module rather than in a separate `clk_divider` module which also reduced readability. 
