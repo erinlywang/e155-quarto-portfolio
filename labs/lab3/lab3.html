@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.8.24">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -34,14 +34,15 @@ ul.task-list li input[type="checkbox"] {
 <meta name="quarto:offset" content="../../">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-dfb324f25d9b1687192fa8be62ac8f9c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-e31584831b205ffbb2d98406f31c2a5b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -84,7 +85,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -110,6 +111,8 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    </a>
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">E155 Portfolio</span>
     </a>
@@ -192,7 +195,11 @@ window.Quarto = {
   <li><a href="#testbench-simulation" id="toc-testbench-simulation" class="nav-link" data-scroll-target="#testbench-simulation">Testbench Simulation</a></li>
   </ul></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
-  <li><a href="#ai-prototype-and-reflection" id="toc-ai-prototype-and-reflection" class="nav-link" data-scroll-target="#ai-prototype-and-reflection">AI Prototype and Reflection</a></li>
+  <li><a href="#ai-prototype-and-reflection" id="toc-ai-prototype-and-reflection" class="nav-link" data-scroll-target="#ai-prototype-and-reflection">AI Prototype and Reflection</a>
+  <ul class="collapse">
+  <li><a href="#prototype-a-monolithic-prompt" id="toc-prototype-a-monolithic-prompt" class="nav-link" data-scroll-target="#prototype-a-monolithic-prompt">Prototype A: Monolithic Prompt</a></li>
+  <li><a href="#prototype-b-modular-prompts" id="toc-prototype-b-modular-prompts" class="nav-link" data-scroll-target="#prototype-b-modular-prompts">Prototype B: Modular Prompts</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -290,8 +297,27 @@ Figure&nbsp;3: The calculation for the transistor current-limiting resistors usi
 <section id="debounce-design-and-fsm-diagrams" class="level3">
 <h3 class="anchored" data-anchor-id="debounce-design-and-fsm-diagrams">Debounce design and FSM diagrams</h3>
 <p>One of the mechanical issues with the keypad buttons is that the buttons “bounce” when pressed. I chose to debounce my keypad buttons using an 3-state FSM that waits for a button to be pressed, then when the button was pressed the FSM would enter a state that waits for a counter to reach high enough that the button would have stabilized, then when the counter reaches a set number the FSM would enter a state that waits for the button to be released.</p>
-<p><img src="images/lab3_scanfsm.jpg" id="fig-scanfsm" class="img-fluid" alt="Scanner FSM state transition diagram and state transition table."> <img src="images/lab3_debdigfsm.jpg" id="fig-tbdebdigfsm" class="img-fluid" alt="Debouncer and Digit FSM state transition diagram and state transition table."></p>
-<p>The images above detail the design of the three FSMs that I used in my overall implementation. One FSM was to switch between scanning for rows and holding when a key was pressed (<strong>?@fig-scanfsm</strong>). Another FSM was the debouncing FSM to only register the keypress once (<strong>?@fig-tbdebdigfsm</strong>). And the digit FSM was for switching between updating the digits and not updating the digits (<strong>?@fig-tbdebdigfsm</strong>). The FSM is a simple strategy to store an input in “memory” and use this memory to decide what to do at the next clock cycle. However, some of the tradeoffs with the FSM is that the inputs and timing can get really tricky especially in this lab where multiple FSMs needed to communicate with each other.</p>
+<div id="fig-scanfsm" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-scanfsm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/lab3_scanfsm.jpg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-scanfsm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Scanner FSM state transition diagram and state transition table.
+</figcaption>
+</figure>
+</div>
+<div id="fig-tbdebdigfsm" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-tbdebdigfsm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/lab3_debdigfsm.jpg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tbdebdigfsm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Debouncer and Digit FSM state transition diagram and state transition table.
+</figcaption>
+</figure>
+</div>
+<p>The images above detail the design of the three FSMs that I used in my overall implementation. One FSM was to switch between scanning for rows and holding when a key was pressed (<a href="#fig-scanfsm" class="quarto-xref">Figure&nbsp;4</a>). Another FSM was the debouncing FSM to only register the keypress once (<a href="#fig-tbdebdigfsm" class="quarto-xref">Figure&nbsp;5</a>). And the digit FSM was for switching between updating the digits and not updating the digits (<a href="#fig-tbdebdigfsm" class="quarto-xref">Figure&nbsp;5</a>). The FSM is a simple strategy to store an input in “memory” and use this memory to decide what to do at the next clock cycle. However, some of the tradeoffs with the FSM is that the inputs and timing can get really tricky especially in this lab where multiple FSMs needed to communicate with each other.</p>
 </section>
 </section>
 <section id="technical-documentation" class="level2">
@@ -305,11 +331,11 @@ Figure&nbsp;3: The calculation for the transistor current-limiting resistors usi
 <img src="images/lab3_block.jpg" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-block-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4: Block diagram showing the top module and the submodules <code>HSOSC</code>, <code>scanner</code>, <code>debouncer</code>, <code>synchronizer</code>, <code>digit,</code>keypad<code>,</code>mpx<code>, and</code>sevseg`.
+Figure&nbsp;6: Block diagram showing the top module and the submodules <code>HSOSC</code>, <code>scanner</code>, <code>debouncer</code>, <code>synchronizer</code>, <code>digit,</code>keypad<code>,</code>mpx<code>, and</code>sevseg`.
 </figcaption>
 </figure>
 </div>
-<p>The block diagram in <a href="#fig-block" class="quarto-xref">Figure&nbsp;4</a> demonstrates the overall architecture of the design. The top-level module <code>top</code> includes 8 submodules: the high-speed oscillator block (<code>HSOSC</code>), the scanner to check for keypad presses, the debouncer to debounce the button presses, the synchronizer to synchronizer the <code>row</code> and <code>col</code> signals, the digit module to send the debounced signal either to the right digit and send the previous right digit to the left digit, the keypad module to decode a <code>row</code> and <code>col</code> pair into a key on the keypad, and finally the multiplexer to alternate at 60 Hz (<code>mpx</code>) and the 7-segment display module from Lab 1 (<code>sevseg</code>).</p>
+<p>The block diagram in <a href="#fig-block" class="quarto-xref">Figure&nbsp;6</a> demonstrates the overall architecture of the design. The top-level module <code>top</code> includes 8 submodules: the high-speed oscillator block (<code>HSOSC</code>), the scanner to check for keypad presses, the debouncer to debounce the button presses, the synchronizer to synchronizer the <code>row</code> and <code>col</code> signals, the digit module to send the debounced signal either to the right digit and send the previous right digit to the left digit, the keypad module to decode a <code>row</code> and <code>col</code> pair into a key on the keypad, and finally the multiplexer to alternate at 60 Hz (<code>mpx</code>) and the 7-segment display module from Lab 1 (<code>sevseg</code>).</p>
 </section>
 </section>
 <section id="schematic" class="level2">
@@ -320,22 +346,22 @@ Figure&nbsp;4: Block diagram showing the top module and the submodules <code>HSO
 <img src="images/lab3_schematic.jpg" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-schematic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5: Schematic of the layout not including the the reset button (P43). The diodes of each digit of the 7-segment display share a common anode.
+Figure&nbsp;7: Schematic of the layout not including the the reset button (P43). The diodes of each digit of the 7-segment display share a common anode.
 </figcaption>
 </figure>
 </div>
-<p><a href="#fig-schematic" class="quarto-xref">Figure&nbsp;5</a> shows the physical layout of the design. The output 7-segment diodes were connected using a 1kΩ current-limiting resistor to ensure the output current (~1.4 mA) did not exceed the maximum output current of the FPGA I/O pins. The figure also shows which pin number of the dual display corresponds to which segment (i.e.&nbsp;A1,A2,B1, B2…) of the 7-segment display.</p>
+<p><a href="#fig-schematic" class="quarto-xref">Figure&nbsp;7</a> shows the physical layout of the design. The output 7-segment diodes were connected using a 1kΩ current-limiting resistor to ensure the output current (~1.4 mA) did not exceed the maximum output current of the FPGA I/O pins. The figure also shows which pin number of the dual display corresponds to which segment (i.e.&nbsp;A1,A2,B1, B2…) of the 7-segment display.</p>
 <div id="fig-sevsegletters" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-sevsegletters-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="images/seven_seg_map.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sevsegletters-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6: Diagram of the letter assignment for the 7-segment display.
+Figure&nbsp;8: Diagram of the letter assignment for the 7-segment display.
 </figcaption>
 </figure>
 </div>
-<p><a href="#fig-sevsegletters" class="quarto-xref">Figure&nbsp;6</a> depicts the assignment of letters to a digit of the output display. In the program, seg[0] corresponds to a, seg[1] to b, and so on.</p>
+<p><a href="#fig-sevsegletters" class="quarto-xref">Figure&nbsp;8</a> depicts the assignment of letters to a digit of the output display. In the program, seg[0] corresponds to a, seg[1] to b, and so on.</p>
 </section>
 <section id="results-and-discussion" class="level2">
 <h2 class="anchored" data-anchor-id="results-and-discussion">Results and Discussion</h2>
@@ -349,11 +375,11 @@ Figure&nbsp;6: Diagram of the letter assignment for the 7-segment display.
 <img src="images/lab3_tbtop.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tbtop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;7: Testbench simulation results for top module. The simulation shows outputs match expected outputs for all asserts
+Figure&nbsp;9: Testbench simulation results for top module. The simulation shows outputs match expected outputs for all asserts
 </figcaption>
 </figure>
 </div>
-<p>The design met all intended design objectives. <a href="#fig-tbtop" class="quarto-xref">Figure&nbsp;7</a> shows a screenshot of the QuestaSim simulation for the <code>top</code> module’s testbench <code>tb_top</code>. Because all the outputs depend on <code>HSOSC</code> it can be assumed that <code>HSOSC</code> toggles. As shown in <a href="#fig-tbtop" class="quarto-xref">Figure&nbsp;7</a>, the simulated outputs of <code>seg</code> change when expected in relation to the <code>led0</code> which holds the value for whether the button is debounced and <code>counter</code> from the <code>mpx</code> module which updates what key to send to the <code>seg</code> module. <code>seg</code> is expected then to change after the button is debounced (db/counter reaches 500000) and the mpx sends <code>seg</code> the key to output (db/mpx reaches 200000). I wrote tests for all 16 keys that <code>seg</code> matches expected for when the button is pressed, when another button is pressed while the first one is still pressed, and when the button is released. Although not pictured, the testbench passed all tests for all 16 keys.</p>
+<p>The design met all intended design objectives. <a href="#fig-tbtop" class="quarto-xref">Figure&nbsp;9</a> shows a screenshot of the QuestaSim simulation for the <code>top</code> module’s testbench <code>tb_top</code>. Because all the outputs depend on <code>HSOSC</code> it can be assumed that <code>HSOSC</code> toggles. As shown in <a href="#fig-tbtop" class="quarto-xref">Figure&nbsp;9</a>, the simulated outputs of <code>seg</code> change when expected in relation to the <code>led0</code> which holds the value for whether the button is debounced and <code>counter</code> from the <code>mpx</code> module which updates what key to send to the <code>seg</code> module. <code>seg</code> is expected then to change after the button is debounced (db/counter reaches 500000) and the mpx sends <code>seg</code> the key to output (db/mpx reaches 200000). I wrote tests for all 16 keys that <code>seg</code> matches expected for when the button is pressed, when another button is pressed while the first one is still pressed, and when the button is released. Although not pictured, the testbench passed all tests for all 16 keys.</p>
 </section>
 <section id="scanner-module" class="level4">
 <h4 class="anchored" data-anchor-id="scanner-module"><code>scanner</code> Module</h4>
@@ -363,11 +389,11 @@ Figure&nbsp;7: Testbench simulation results for top module. The simulation shows
 <img src="images/lab3_tbscanner.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tbscanner-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8: Testbench simulation results for scanner module. The simulation shows outputs match expected outputs for all asserts
+Figure&nbsp;10: Testbench simulation results for scanner module. The simulation shows outputs match expected outputs for all asserts
 </figcaption>
 </figure>
 </div>
-<p><a href="#fig-tbscanner" class="quarto-xref">Figure&nbsp;8</a> shows that the <code>scanner</code> module reaches all scanning states when no row is input and reaches all pressed states when a row is input at the corresponding column. At the end of the simulation, the image shows that the scanner module also correctly stays in the PRESSED state even when a new input key is pressed while the first key is held.</p>
+<p><a href="#fig-tbscanner" class="quarto-xref">Figure&nbsp;10</a> shows that the <code>scanner</code> module reaches all scanning states when no row is input and reaches all pressed states when a row is input at the corresponding column. At the end of the simulation, the image shows that the scanner module also correctly stays in the PRESSED state even when a new input key is pressed while the first key is held.</p>
 </section>
 <section id="debouncer-module" class="level4">
 <h4 class="anchored" data-anchor-id="debouncer-module"><code>debouncer</code> Module</h4>
@@ -377,34 +403,64 @@ Figure&nbsp;8: Testbench simulation results for scanner module. The simulation s
 <img src="images/lab3_tbdebouncerS1.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tbdebouncerS1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9: Testbench simulation results for debouncer module. The simulation shows the correct states as expected with the set inputs.
+Figure&nbsp;11: Testbench simulation results for debouncer module. The simulation shows the correct states as expected with the set inputs.
 </figcaption>
 </figure>
 </div>
-<p><a href="#fig-tbdebouncerS1" class="quarto-xref">Figure&nbsp;9</a> shows that the <code>debouncer</code> module moves from S0 (waiting for key press) to S1 when a key is registered and correctly stays in the S1 state of waiting for <code>debounced</code> to go high (<code>counter</code> to reach 500000) even when a new input key is pressed while the first key is held.</p>
+<p><a href="#fig-tbdebouncerS1" class="quarto-xref">Figure&nbsp;11</a> shows that the <code>debouncer</code> module moves from S0 (waiting for key press) to S1 when a key is registered and correctly stays in the S1 state of waiting for <code>debounced</code> to go high (<code>counter</code> to reach 500000) even when a new input key is pressed while the first key is held.</p>
 <div id="fig-tbdebouncerS2" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-tbdebouncerS2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="images/lab3_tbdebouncerS2.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tbdebouncerS2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;10: Testbench simulation results for debouncer module. The simulation shows the correct states as expected with the set inputs.
+Figure&nbsp;12: Testbench simulation results for debouncer module. The simulation shows the correct states as expected with the set inputs.
 </figcaption>
 </figure>
 </div>
-<p><a href="#fig-tbdebouncerS2" class="quarto-xref">Figure&nbsp;10</a> shows that the <code>debouncer</code> module moves from S1 (waiting for <code>debounced</code>) to S2 when <code>debounced</code> goes high and stays in the S2 state of waiting for the button to be released even when a new input key is pressed while the first key is held. The FSM also correctly moves back to S0 when the button is released (<code>row</code> input is <code>4'b0000</code>). <code>debounced</code> also correctly goes high after the counter counts up to 500000.</p>
+<p><a href="#fig-tbdebouncerS2" class="quarto-xref">Figure&nbsp;12</a> shows that the <code>debouncer</code> module moves from S1 (waiting for <code>debounced</code>) to S2 when <code>debounced</code> goes high and stays in the S2 state of waiting for the button to be released even when a new input key is pressed while the first key is held. The FSM also correctly moves back to S0 when the button is released (<code>row</code> input is <code>4'b0000</code>). <code>debounced</code> also correctly goes high after the counter counts up to 500000.</p>
 </section>
 <section id="synchronizer-module" class="level4">
 <h4 class="anchored" data-anchor-id="synchronizer-module"><code>synchronizer</code> Module</h4>
-<p><img src="images/lab3_tbsync.png" id="fig-tbsync" class="img-fluid" alt="Testbench simulation results for synchronizer module. The simulation shows outputs match expected outputs for all asserts."> <strong>?@fig-tbsync</strong> shows that the <code>synchronizer</code> module correctly transfers the asynchronous input to the synchronized output after 4 clock cycles. The choice of 4 clock cycles was for the synchronized output to match the right SCANNING state in the <code>scanner</code> module, and there are 4 scanning states to run through in the scanning cycle.</p>
+<div id="fig-tbsync" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-tbsync-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/lab3_tbsync.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tbsync-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13: Testbench simulation results for synchronizer module. The simulation shows outputs match expected outputs for all asserts.
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-tbsync" class="quarto-xref">Figure&nbsp;13</a> shows that the <code>synchronizer</code> module correctly transfers the asynchronous input to the synchronized output after 4 clock cycles. The choice of 4 clock cycles was for the synchronized output to match the right SCANNING state in the <code>scanner</code> module, and there are 4 scanning states to run through in the scanning cycle.</p>
 </section>
 <section id="digit-module" class="level4">
 <h4 class="anchored" data-anchor-id="digit-module"><code>digit</code> Module</h4>
-<p><img src="images/lab3_tbdigit.png" id="fig-tbdigit" class="img-fluid" alt="Testbench simulation results for digit module. The simulation shows outputs match expected outputs for all asserts."> <strong>?@fig-tbdigit</strong> shows that the <code>digit</code> module visits all 3 states. The module correctly does not transfer any information when in the <code>NOUPDATE</code> state and correctly transfers the most recent input only to the right row/col and updates the left row/col with the previous values of the right row/col in the <code>UPDATE</code> state. The module also correctly only updates the right and left rows/cols by moving to the <code>FINISHEDUPDATE</code> state after updating once as well as returns to <code>NOUPDATE</code> when the <code>debounced</code> signal goes back to 0 (<code>debouncer</code> module is back to waiting for a button to be pressed).</p>
+<div id="fig-tbdigit" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-tbdigit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/lab3_tbdigit.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tbdigit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14: Testbench simulation results for digit module. The simulation shows outputs match expected outputs for all asserts.
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-tbdigit" class="quarto-xref">Figure&nbsp;14</a> shows that the <code>digit</code> module visits all 3 states. The module correctly does not transfer any information when in the <code>NOUPDATE</code> state and correctly transfers the most recent input only to the right row/col and updates the left row/col with the previous values of the right row/col in the <code>UPDATE</code> state. The module also correctly only updates the right and left rows/cols by moving to the <code>FINISHEDUPDATE</code> state after updating once as well as returns to <code>NOUPDATE</code> when the <code>debounced</code> signal goes back to 0 (<code>debouncer</code> module is back to waiting for a button to be pressed).</p>
 </section>
 <section id="keypad-module" class="level4">
 <h4 class="anchored" data-anchor-id="keypad-module"><code>keypad</code> Module</h4>
-<p><img src="images/lab3_tbkeypad.png" id="fig-tbkeypad" class="img-fluid" alt="Testbench simulation results for keypad module. The simulation shows outputs match expected outputs for all asserts."> <strong>?@fig-tbkeypad</strong> shows that the <code>keypad</code> module correctly matches a row and column pair to its corresponding key on the 4x4 keypad.</p>
+<div id="fig-tbkeypad" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-tbkeypad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/lab3_tbkeypad.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tbkeypad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;15: Testbench simulation results for keypad module. The simulation shows outputs match expected outputs for all asserts.
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-tbkeypad" class="quarto-xref">Figure&nbsp;15</a> shows that the <code>keypad</code> module correctly matches a row and column pair to its corresponding key on the 4x4 keypad.</p>
 </section>
 <section id="sevseg-module" class="level4">
 <h4 class="anchored" data-anchor-id="sevseg-module"><code>sevseg</code> Module</h4>
@@ -414,11 +470,11 @@ Figure&nbsp;10: Testbench simulation results for debouncer module. The simulatio
 <img src="images/lab2_tbsevseg.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tbsevseg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11: Testbench simulation results for the sevseg module. The simulation shows outputs match expected outputs for all testvectors
+Figure&nbsp;16: Testbench simulation results for the sevseg module. The simulation shows outputs match expected outputs for all testvectors
 </figcaption>
 </figure>
 </div>
-<p><a href="#fig-tbsevseg" class="quarto-xref">Figure&nbsp;11</a> shows a screenshot of the QuestaSim simulation for the <code>sevseg</code> module’s testbench <code>tb_sevseg</code>. The simulated outputs of <code>seg</code> match the expected outputs.</p>
+<p><a href="#fig-tbsevseg" class="quarto-xref">Figure&nbsp;16</a> shows a screenshot of the QuestaSim simulation for the <code>sevseg</code> module’s testbench <code>tb_sevseg</code>. The simulated outputs of <code>seg</code> match the expected outputs.</p>
 </section>
 <section id="mpx-module" class="level4">
 <h4 class="anchored" data-anchor-id="mpx-module"><code>mpx</code> Module</h4>
@@ -428,22 +484,22 @@ Figure&nbsp;11: Testbench simulation results for the sevseg module. The simulati
 <img src="images/lab2_tbmpxCOUNTLOW.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tbmpx0-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;12: Testbench simulation results for the mpx module for before the flip. The simulation shows outputs match expected outputs for all asserts
+Figure&nbsp;17: Testbench simulation results for the mpx module for before the flip. The simulation shows outputs match expected outputs for all asserts
 </figcaption>
 </figure>
 </div>
-<p><a href="#fig-tbmpx0" class="quarto-xref">Figure&nbsp;12</a> shows a screenshot of the QuestaSim simulation for the <code>mpx</code> module’s testbench <code>tb_mpx</code> to test that the <code>s</code>, <code>trans0</code>, and <code>trans1</code> output matches the expected outputs for before the alternation (aka flip) at <code>counter = 200000</code>. Because we are before the flip, <code>s</code> should be the same as the <code>s0</code> input and <code>trans0</code> and <code>trans1</code> should be 0 and 1 respectively. The simulated outputs of <code>mpx</code> match the expected outputs for before the flip and the counter is counting up.</p>
+<p><a href="#fig-tbmpx0" class="quarto-xref">Figure&nbsp;17</a> shows a screenshot of the QuestaSim simulation for the <code>mpx</code> module’s testbench <code>tb_mpx</code> to test that the <code>s</code>, <code>trans0</code>, and <code>trans1</code> output matches the expected outputs for before the alternation (aka flip) at <code>counter = 200000</code>. Because we are before the flip, <code>s</code> should be the same as the <code>s0</code> input and <code>trans0</code> and <code>trans1</code> should be 0 and 1 respectively. The simulated outputs of <code>mpx</code> match the expected outputs for before the flip and the counter is counting up.</p>
 <div id="fig-tbmpx1" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-tbmpx1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="images/lab2_tbmpxCOUNTHIGH.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tbmpx1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;13: Testbench simulation results for the mpx module for after the flip. The simulation shows outputs match expected outputs for all testvectors
+Figure&nbsp;18: Testbench simulation results for the mpx module for after the flip. The simulation shows outputs match expected outputs for all testvectors
 </figcaption>
 </figure>
 </div>
-<p><a href="#fig-tbmpx1" class="quarto-xref">Figure&nbsp;13</a> shows a screenshot of the QuestaSim simulation for the <code>mpx</code> module’s testbench <code>tb_mpx</code> to test that the <code>s</code>, <code>trans0</code>, and <code>trans1</code> output matches the expected outputs for after the alternation (aka flip) that should occur when the counter reaches 200000. Because we are after the flip, <code>s</code> should be the same as the <code>s1</code> input and <code>trans0</code> and <code>trans1</code> should be 1 and 0 respectively. The simulated outputs of <code>mpx</code> match the expected outputs for after the flip and the flip happens when the counter reaches 200000. The reset of the counter after <code>count</code> reaches 200000 is also visualized.</p>
+<p><a href="#fig-tbmpx1" class="quarto-xref">Figure&nbsp;18</a> shows a screenshot of the QuestaSim simulation for the <code>mpx</code> module’s testbench <code>tb_mpx</code> to test that the <code>s</code>, <code>trans0</code>, and <code>trans1</code> output matches the expected outputs for after the alternation (aka flip) that should occur when the counter reaches 200000. Because we are after the flip, <code>s</code> should be the same as the <code>s1</code> input and <code>trans0</code> and <code>trans1</code> should be 1 and 0 respectively. The simulated outputs of <code>mpx</code> match the expected outputs for after the flip and the flip happens when the counter reaches 200000. The reset of the counter after <code>count</code> reaches 200000 is also visualized.</p>
 </section>
 </section>
 </section>
@@ -454,9 +510,36 @@ Figure&nbsp;13: Testbench simulation results for the mpx module for after the fl
 </section>
 <section id="ai-prototype-and-reflection" class="level2">
 <h2 class="anchored" data-anchor-id="ai-prototype-and-reflection">AI Prototype and Reflection</h2>
+<section id="prototype-a-monolithic-prompt" class="level3">
+<h3 class="anchored" data-anchor-id="prototype-a-monolithic-prompt">Prototype A: Monolithic Prompt</h3>
+<p>The Claude AI produced a code with 4 modules: a <code>keypad_top</code> module that drives columns and checks rows, a <code>clk_divider</code> module that is used both for scanning and display,a <code>keypad_scanner</code> module that jumps from scanning the different columns to a key-hold state to a key-release state, and a <code>display controller</code> with time multiplexing to alterante between the digits of the disp_clk rate and also holds the 7-segment decoder of what segments to activate on the display. The code actually synthesized on the first try which suprised me. Usually it takes a couple errors fed back into the AI to get a synthesizable code. Something that was interesting to me was that the code in the <code>keypad_scanner</code> module saved the pressed key as an array with the active column and the input low row. I also thought that later in the same module, the output register had a really interesting implementation of having a variable holding whether the key is valid that relies on whether the next state is the <code>KEY_RELEASED</code> state.</p>
+<details>
+<summary>
+Prototype A Scanner Register Code
+</summary>
+<pre><code>always_ff @(posedge scan_clk or negedge rst_n) begin
+        if (!rst_n) begin
+            key_code  &lt;= 4'h0;
+            key_valid &lt;= 1'b0;
+        end else begin
+            key_valid &lt;= (next_state == KEY_RELEASED);  // Pulse on key release
+            if (key_detected &amp;&amp; (state != KEY_HELD)) begin
+                key_code &lt;= pressed_key;
+            end
+        end
+    end</code></pre>
+</details>
+<p>I thought this was an interesting implementation since I’ve always been taught to put this kind of logic in an always_comb and to add more states if needed rather than to put the logic in the flop register. I didn’t use active-low in my design, but I heard many people had issues with getting one of the specs of holding down one button then pressing another button in the same column (if driving columns and checking rows) then releasing the first button and keeping the second button pressed and registering the second button once. The idea of a <code>key_valid</code> in the flop could possibly circumvent this, but it’s hard to check without having an active-low hardware implementation to test on.</p>
+<p>There were way less FSMs than in my implementation. The <code>keypad_scanner</code> module also used the slowed down clock from <code>clk_driver</code> to work the FSM state register. I believe this was to address the problem of debouncing which was different from my implementation of using an FSM.</p>
+</section>
+<section id="prototype-b-modular-prompts" class="level3">
+<h3 class="anchored" data-anchor-id="prototype-b-modular-prompts">Prototype B: Modular Prompts</h3>
+<p>This time the Claude AI produced 3 modules: <code>keypad_top</code>, <code>keypad_scanner</code>, and <code>keypad_oneshot</code>. However, the design did not synthesize due to the use of the <code>SB_HFOSC</code> module which we are not using. This was an issue I’ve run into in the first lab AI prototype. After telling the AI to use <code>HSOSC</code> instead, the code ran into another issue of instantiating unknown modules for <code>sevenSegment</code>. Feeding this into the AI caused the AI to build the module which then allowed the code to synthesize!</p>
+<p>The debounce FSM was actually very similar to my own FSM with an <code>IDLE</code>, <code>DEBOUNCE</code>, <code>KEY_HELD</code>, and <code>WAIT_RELEASE</code> state. I actually ended up only using three states for idle, waiting for debounce, and waiting for release. In terms of synthesizability, the modular prompts needed more help and guidance to produce a synthesizable code. Because I’m more familiar with FSM structure, it was a little easier to follow than the monolithic prompt. However, the size of the code with so many FSMs does mean the readability decreases a bit. This could also be in part due to having all the modules on the same file. I had a lot of timing issues in my own code while debugging, and what I see with this code is that a lot of the variables that deal with FSM states are computed internally in the module when possible as opposed to grabbing the necessary input from other FSMs. The modular prompt also caused the clock dividing to be placed in the <code>keypad_top</code> module rather than in a separate <code>clk_divider</code> module which also reduced readability.</p>
 
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -511,13 +594,14 @@ Figure&nbsp;13: Testbench simulation results for the mpx module for after the fl
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
