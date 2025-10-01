@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Erin Wang">
+<meta name="dcterms.date" content="2025-09-30">
 
-<title>lab4 – E155 Portfolio</title>
+<title>Lab 4 Report – E155 Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -41,6 +43,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap-e31584831b205ffbb2d98406f31c2a5b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-contrib/videojs/video.min.js"></script>
+<link href="../../site_libs/quarto-contrib/videojs/video-js.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -168,18 +172,343 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#lab-hours" id="toc-lab-hours" class="nav-link active" data-scroll-target="#lab-hours">Lab Hours</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#design-and-testing-methodology" id="toc-design-and-testing-methodology" class="nav-link" data-scroll-target="#design-and-testing-methodology">Design and Testing Methodology</a>
+  <ul class="collapse">
+  <li><a href="#verifying-1-accuracy-for-220-hz-to-1000-hz-frequencies" id="toc-verifying-1-accuracy-for-220-hz-to-1000-hz-frequencies" class="nav-link" data-scroll-target="#verifying-1-accuracy-for-220-hz-to-1000-hz-frequencies">Verifying 1% Accuracy for 220 Hz to 1000 Hz Frequencies</a></li>
+  <li><a href="#maxmin-duration" id="toc-maxmin-duration" class="nav-link" data-scroll-target="#maxmin-duration">Max/Min Duration</a></li>
+  <li><a href="#maxmin-frequency" id="toc-maxmin-frequency" class="nav-link" data-scroll-target="#maxmin-frequency">Max/Min Frequency</a></li>
+  <li><a href="#lm386-circuit-design" id="toc-lm386-circuit-design" class="nav-link" data-scroll-target="#lm386-circuit-design">LM386 Circuit Design</a></li>
+  </ul></li>
+  <li><a href="#technical-documentation" id="toc-technical-documentation" class="nav-link" data-scroll-target="#technical-documentation">Technical Documentation</a></li>
+  <li><a href="#schematic" id="toc-schematic" class="nav-link" data-scroll-target="#schematic">Schematic</a></li>
+  <li><a href="#results-and-discussion" id="toc-results-and-discussion" class="nav-link" data-scroll-target="#results-and-discussion">Results and Discussion</a>
+  <ul class="collapse">
+  <li><a href="#picture-of-circuit-and-video-of-chosen-composition-soda-pop-by-the-saja-boys" id="toc-picture-of-circuit-and-video-of-chosen-composition-soda-pop-by-the-saja-boys" class="nav-link" data-scroll-target="#picture-of-circuit-and-video-of-chosen-composition-soda-pop-by-the-saja-boys">Picture of Circuit and Video of Chosen Composition (“Soda Pop” by the Saja Boys)</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#ai-prototype-and-reflection" id="toc-ai-prototype-and-reflection" class="nav-link" data-scroll-target="#ai-prototype-and-reflection">AI Prototype and Reflection</a>
+  <ul class="collapse">
+  <li><a href="#best-timer-choice-tim2" id="toc-best-timer-choice-tim2" class="nav-link" data-scroll-target="#best-timer-choice-tim2">Best Timer Choice: TIM2</a></li>
+  <li><a href="#relevant-formulae" id="toc-relevant-formulae" class="nav-link" data-scroll-target="#relevant-formulae">Relevant Formulae</a></li>
+  <li><a href="#example-calculations" id="toc-example-calculations" class="nav-link" data-scroll-target="#example-calculations">Example Calculations</a></li>
+  <li><a href="#key-register-to-configure" id="toc-key-register-to-configure" class="nav-link" data-scroll-target="#key-register-to-configure">Key Register to Configure</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lab 4 Report</h1>
+</div>
 
 
 
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Erin Wang </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 30, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="lab-hours" class="level2">
+<h2 class="anchored" data-anchor-id="lab-hours">Lab Hours</h2>
+<p>I spent 30 hours on this lab.</p>
+</section>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>Lab 4 involved learning how to setup header files for the MCU by practicing making a header file for the timers TIM15 and TIM16 as well as in writing to registers to output frequencies corresponding to different notes.</p>
+</section>
+<section id="design-and-testing-methodology" class="level2">
+<h2 class="anchored" data-anchor-id="design-and-testing-methodology">Design and Testing Methodology</h2>
+<section id="verifying-1-accuracy-for-220-hz-to-1000-hz-frequencies" class="level3">
+<h3 class="anchored" data-anchor-id="verifying-1-accuracy-for-220-hz-to-1000-hz-frequencies">Verifying 1% Accuracy for 220 Hz to 1000 Hz Frequencies</h3>
+<p>In order to create a PWM of different frequencies, I made use of timer TIM16 on the MCU to slow down an incoming clock and turn on and off given a number of ticks corresponding to the period of the input frequency. The divider for the incoming clock had to be selected in order to accomodate 220 Hz to 1000 Hz without overflowing the prescaler or the timer counter. I was able to control the AHB2, APB2, and TIM16 prescaler. However, I chose only to manipulate the 16-bit TIM16 prescaler as it had greater flexibility with being able to be set to values 1 to 65536 and meant that the other peripherals using AHB2 and APB2 wouldn’t be affected by a slower clock. Because I used the <code>PLL</code> as the <code>SYSCLK</code>, the incoming signal to TIM16 was 80 MHz. I chose the AHB2 prescaler to be /1, the APB2 prescaler to be /1, and the TIM16 prescaler to be 7. With the TIM16 prescaler (<code>PSC</code>). the input clock to TIM16 is divided by <code>PSC + 1</code>such that</p>
+<p><span class="math display">\[
+TIM16_{frequency} = {\frac{80 MHz}{7+1}} = 10 MHz
+\]</span></p>
+<p>Because the TIM16 counter upcounts everytime it sees a clock edge that means that at an incoming 10 MHz clock provides 10000000 ticks per second. However, due to the limitations of the MCU, the division rounds down. This results in the following discrepancy between input and output note frequency:</p>
+<section id="for-220-hz" class="level4">
+<h4 class="anchored" data-anchor-id="for-220-hz">For 220 Hz…</h4>
+<p><span class="math display">\[
+actual\:counter = {\frac{10000000 {\frac{ticks}{s}}}{220 {\frac{1}{s}}}} = 45454.54545 \: ticks
+\]</span> <span class="math display">\[
+calculated\:counter = {\frac{10000000 {\frac{ticks}{s}}}{220 {\frac{1}{s}}}} = 45454 : ticks
+\]</span> <span class="math display">\[
+calculated\:frequency = {\frac{10000000 {\frac{ticks}{s}}}{45454 \:ticks}} = 220.0026400317 Hz
+\]</span></p>
+<p><span class="math display">\[
+\begin{align*}
+percent \: difference &amp;= {\frac{calculated \: frequency - actual \: frequency}{actual \: frequency}} * 100\% \\
+&amp;= {\frac{220.0026400317 Hz - 220 Hz}{220 Hz}} * 100\% \\
+&amp;= 0.0012\%
+\end{align*}
+\]</span></p>
+</section>
+<section id="for-1000-hz" class="level4">
+<h4 class="anchored" data-anchor-id="for-1000-hz">For 1000 Hz…</h4>
+<p><span class="math display">\[
+actual\:counter = {\frac{10000000 {\frac{ticks}{s}}}{1000 {\frac{1}{s}}}} = 10000 \: ticks
+\]</span> <span class="math display">\[
+calculated\:counter = {\frac{10000000 {\frac{ticks}{s}}}{1000 {\frac{1}{s}}}} = 10000 \: ticks
+\]</span> <span class="math display">\[
+calculated\:frequency = {\frac{10000000 {\frac{ticks}{s}}}{10000 \:ticks}} = 1000 Hz
+\]</span></p>
+<p><span class="math display">\[
+\begin{align*}
+percent \: difference &amp;= {\frac{calculated \: frequency - actual \: frequency}{actual \: frequency}} * 100\% \\
+&amp;= {\frac{1000 Hz - 1000 Hz}{10000 Hz}} * 100\% \\
+&amp;= 0\%
+\end{align*}
+\]</span></p>
+</section>
+<section id="for-random-337-hz" class="level4">
+<h4 class="anchored" data-anchor-id="for-random-337-hz">For random 337 Hz…</h4>
+<p><span class="math display">\[
+actual\:counter = {\frac{10000000 {\frac{ticks}{s}}}{337 {\frac{1}{s}}}} = 29673.590504451 \: ticks
+\]</span> <span class="math display">\[
+calculated\:counter = {\frac{10000000 {\frac{ticks}{s}}}{337 {\frac{1}{s}}}} = 29673 \: ticks
+\]</span> <span class="math display">\[
+calculated\:frequency = {\frac{10000000 {\frac{ticks}{s}}}{29673 \:ticks}} = 337.0067064335 Hz
+\]</span></p>
+<p><span class="math display">\[
+\begin{align*}
+percent \: difference &amp;= {\frac{calculated \: frequency - actual \: frequency}{actual \: frequency}} * 100\% \\
+&amp;= {\frac{337.0067064335 Hz - 337 Hz}{337 Hz}} * 100\% \\
+&amp;= 0.00199\%
+\end{align*}
+\]</span></p>
+</section>
+<section id="expected-range-conclusion" class="level4">
+<h4 class="anchored" data-anchor-id="expected-range-conclusion">Expected Range Conclusion</h4>
+<p>Therefore, the <code>PSC</code> of 7 allows for individual pitches to be calculated within %1 accuracy when between 220 Hz and 1000 Hz.</p>
+</section>
+</section>
+<section id="maxmin-duration" class="level3">
+<h3 class="anchored" data-anchor-id="maxmin-duration">Max/Min Duration</h3>
+<p>For the note duration, I used TIM15 for my delay and set the <code>PSC</code> to 7999 such that the incoming clock would be as such.</p>
+<p><span class="math display">\[
+TIM15_{frequency} = {\frac{80 MHz}{7999+1}} = 10 kHz
+\]</span></p>
+<p>According to the <a href="https://hmc-e155.github.io/assets/doc/rm0394-stm32l41xxx42xxx43xxx44xxx45xxx46xxx-advanced-armbased-32bit-mcus-stmicroelectronics.pdf">STM reference manual</a>, the TIM15 counter is able to go from 1 to 65536. Using these values, the calculated max and min durations are as follows.</p>
+<section id="max-duration" class="level4">
+<h4 class="anchored" data-anchor-id="max-duration">Max Duration</h4>
+<p><span class="math display">\[
+max \: duration = {\frac{655356 \: ticks}{10000 {\frac{ticks}{s}}}} = 6.5536 \: s = 6553.6 \: ms
+\]</span></p>
+</section>
+<section id="min-duration" class="level4">
+<h4 class="anchored" data-anchor-id="min-duration">Min Duration</h4>
+<p><span class="math display">\[
+min \: duration = {\frac{1 \: tick}{10000 {\frac{ticks}{s}}}} = 0.0001 \: s = 0.1 \: ms
+\]</span></p>
+</section>
+<section id="duration-conclusion" class="level4">
+<h4 class="anchored" data-anchor-id="duration-conclusion">Duration Conclusion</h4>
+<p>By calculation the theoretical max/min duration are 6553.6 ms and 0.1 ms respectively. However, because the counter can only handle integer inputs, this is rounded to 6553 and 0 ms respectively.</p>
+</section>
+</section>
+<section id="maxmin-frequency" class="level3">
+<h3 class="anchored" data-anchor-id="maxmin-frequency">Max/Min Frequency</h3>
+<p>According to the <a href="https://hmc-e155.github.io/assets/doc/rm0394-stm32l41xxx42xxx43xxx44xxx45xxx46xxx-advanced-armbased-32bit-mcus-stmicroelectronics.pdf">STM reference manual</a>, the TIM16 counter is able to go from 1 to 65536. Using these values and the <code>TIM16</code> frequency as calculated above to be 10 MHz, the calculated max and min frequencies are as follows.</p>
+<section id="max-frequency" class="level4">
+<h4 class="anchored" data-anchor-id="max-frequency">Max Frequency</h4>
+<p><span class="math display">\[
+max \: frequency = {\frac{10000000 {\frac{ticks}{s}}}{1 \: tick}} = 10 \: MHz
+\]</span></p>
+</section>
+<section id="min-frequency" class="level4">
+<h4 class="anchored" data-anchor-id="min-frequency">Min Frequency</h4>
+<p><span class="math display">\[
+max \: frequency = {\frac{10000000 {\frac{ticks}{s}}}{655356 \: ticks}} = 152.588 \: Hz
+\]</span></p>
+</section>
+<section id="duration-conclusion-1" class="level4">
+<h4 class="anchored" data-anchor-id="duration-conclusion-1">Duration Conclusion</h4>
+<p>By calculation the theoretical max/min frequency are 10 MHz and 152.588 Hz respectively. However, because the counter can only handle integer inputs, this is rounded to 10 MHz and 153 Hz respectively.</p>
+</section>
+</section>
+<section id="lm386-circuit-design" class="level3">
+<h3 class="anchored" data-anchor-id="lm386-circuit-design">LM386 Circuit Design</h3>
+<p>In order to properly amplify the output PWM signal to the speaker, I passed the signal through a potentiometer and then into an LM386. The LM386 circuit I used was from the <a href="https://www.ti.com/lit/ds/symlink/lm386.pdf">LM386 Datasheet</a> for a gain of 20 (see <a href="#fig-audiocircuit" class="quarto-xref">Figure&nbsp;1</a>). The only thing I added to this circuit was a 0.1 μF bypass capacitor to deal with any noise in my power signal.</p>
+<div id="fig-audiocircuit" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-audiocircuit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/audiocircuit.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-audiocircuit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: LM386 Datasheet 20 gain circuit schematic.
+</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="technical-documentation" class="level2">
+<h2 class="anchored" data-anchor-id="technical-documentation">Technical Documentation</h2>
+<p>The source code for the project can be found in the associated <a href="https://github.com/erinlywang/e155-lab4">Github repository</a></p>
+</section>
+<section id="schematic" class="level2">
+<h2 class="anchored" data-anchor-id="schematic">Schematic</h2>
+<div id="fig-schematic" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-schematic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/lab4_schematic.jpg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-schematic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Schematic of the layout including the STM and the LM386. The pins of the LM386 are labeled and pin 6 of the LM386 is moved to the left side of the LM386 for ease of circuit connections.
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-schematic" class="quarto-xref">Figure&nbsp;2</a> shows the physical layout of the design. The choice of values for each component is described in the design and testing methodology. The PWM signal comes from PA6 out of the GPIOA port bank.</p>
+</section>
+<section id="results-and-discussion" class="level2">
+<h2 class="anchored" data-anchor-id="results-and-discussion">Results and Discussion</h2>
+<section id="picture-of-circuit-and-video-of-chosen-composition-soda-pop-by-the-saja-boys" class="level3">
+<h3 class="anchored" data-anchor-id="picture-of-circuit-and-video-of-chosen-composition-soda-pop-by-the-saja-boys">Picture of Circuit and Video of Chosen Composition (“Soda Pop” by the Saja Boys)</h3>
+<p>The working circuit is pictured below in <a href="#fig-circuitpic" class="quarto-xref">Figure&nbsp;3</a>.</p>
+<div id="fig-circuitpic" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-circuitpic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/lab4_circuitpic.jpg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-circuitpic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Picture of the working circuit.
+</figcaption>
+</figure>
+</div>
+<p>I chose “Soda Pop” by the Saja Boys from the movie <em>Kpop Demon Hunters</em> as my extra song. Here is the circuit playing the tune.</p>
+<div class="quarto-video"><video id="video_shortcode_videojs_video1" class="video-js vjs-default-skin vjs-fluid" controls="" preload="auto" data-setup="{}" title=""><source src="images/CircuitSodaPop.mp4"></video></div>
+</section>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>The design successfully plays <em>Für Elise</em> at the right tempo and with proper rests. Individual pitches are calculated to be accurate within 1% across the frequency range of 220-1000 Hz. The code uses #define macros for memory-mapped registers.The design incorporates a potentiometer and is able to play another song of my choice.</p>
+<p>Overall a success!</p>
+</section>
+<section id="ai-prototype-and-reflection" class="level2">
+<h2 class="anchored" data-anchor-id="ai-prototype-and-reflection">AI Prototype and Reflection</h2>
+<section id="best-timer-choice-tim2" class="level3">
+<h3 class="anchored" data-anchor-id="best-timer-choice-tim2">Best Timer Choice: TIM2</h3>
+<p>The Claude AI said that the best timer choice would be TIM2 because it has a 32-bit timer which allows PWM output mode, gives more flexibility for the prescaler, and has multiple channels that can be routed to the GPIO pins via alternate functions. However, the AI said alternatively TIM1 or TIM15/16 also work well just with a smaller counter.</p>
+<p>This makes sense to me as the flexibility would be an important part to having a greater range of durations to be able to play as well as less concern with overflowing the counter.</p>
+</section>
+<section id="relevant-formulae" class="level3">
+<h3 class="anchored" data-anchor-id="relevant-formulae">Relevant Formulae</h3>
+<p>According to Claudem the output frequency is determined by:</p>
+<p><code>f_out = f_timer / ((PSC + 1) × (ARR + 1))</code></p>
+<p>Claude defines f_{out} as the timer clock frequency of typically 80 MHz.</p>
+<p>For a 50% duty cycle PWM, Claude writes the equation as</p>
+<p><code>CCRx = ARR / 2</code></p>
+<p>Both of the equations above are the equations I used to calculate my counter frequency and a 50% duty cycle.</p>
+</section>
+<section id="example-calculations" class="level3">
+<h3 class="anchored" data-anchor-id="example-calculations">Example Calculations</h3>
+<p>The following is quoted from the Claude AI:</p>
+<details>
+<summary>
+Claude AI Example Calculations
+</summary>
+<p>For 220 Hz with 80 MHz timer clock:</p>
+<p>Target count = 80,000,000 / 220 = 363,636 Choose PSC = 99 (divides by 100) ARR = 80,000,000 / (100 × 220) - 1 = 3,636 - 1 = 3,635 Actual frequency = 80,000,000 / (100 × 3,636) = 220.02 Hz</p>
+<p>For 1 kHz:</p>
+<p>PSC = 79 (divides by 80) ARR = 80,000,000 / (80 × 1000) - 1 = 999 Actual frequency = 1,000 Hz exactly</p>
+</details>
+<p>I actually really like how the AI calcualted the right ARR. I simply knew from debugging my program that the division rounds down and so I used that when calculating the target. However, it seems like the AI is changing PSC between the two frequencies whereas my program only uses one PSC to capture the full range from 220 Hz to 1kHz.</p>
+</section>
+<section id="key-register-to-configure" class="level3">
+<h3 class="anchored" data-anchor-id="key-register-to-configure">Key Register to Configure</h3>
+<section id="rcc-registers---enable-clocks" class="level4">
+<h4 class="anchored" data-anchor-id="rcc-registers---enable-clocks">1. RCC Registers - Enable Clocks</h4>
+<pre><code>RCC-&gt;APB1ENR1 |= RCC_APB1ENR1_TIM2EN;  // Enable TIM2 clock
+
+RCC-&gt;AHB2ENR |= RCC_AHB2ENR_GPIOAEN;   // Enable GPIO port clock
+</code></pre>
+<p>Because I used TIM15/16 I enabled APB2ENR1 and AHB2ENR.</p>
+</section>
+<section id="gpio-configuration---set-alternate-function" class="level4">
+<h4 class="anchored" data-anchor-id="gpio-configuration---set-alternate-function">2. GPIO Configuration - Set alternate function</h4>
+<p>For TIM2_CH1 on PA0 (example):</p>
+<pre><code>GPIOA-&gt;MODER &amp;= ~GPIO_MODER_MODE0;     // Clear mode bits
+
+GPIOA-&gt;MODER |= GPIO_MODER_MODE0_1;    // Set to alternate function
+
+GPIOA-&gt;AFR[0] |= (1 &lt;&lt; GPIO_AFRL_AFSEL0_Pos);  // AF1 for TIM2
+</code></pre>
+<p>I used the <code>pinMode</code> function given to us in the tutorial GPIO header, however I did need to set AFR for PIN16 for my output PWM signal.</p>
+</section>
+<section id="tim2-registers" class="level4">
+<h4 class="anchored" data-anchor-id="tim2-registers">3. TIM2 Registers</h4>
+<pre><code>TIM2-&gt;PSC = 99; // For 220 Hz example
+
+TIM2-&gt;CCR1 = 1818;  // 50% duty cycle (ARR/2)
+
+TIM2-&gt;CCMR1 |= (6 &lt;&lt; TIM_CCMR1_OC1M_Pos);  // PWM mode 1
+
+TIM2-&gt;CCMR1 |= TIM_CCMR1_OC1PE;            // Preload enable
+
+TIM2-&gt;CCER |= TIM_CCER_CC1E;  // Enable output on channel 1
+
+TIM2-&gt;CR1 |= TIM_CR1_ARPE;  // Auto-reload preload enable
+
+TIM2-&gt;CR1 |= TIM_CR1_CEN;   // Counter enable (start timer)
+
+TIM2-&gt;EGR |= TIM_EGR_UG;  // Generate update event to load registers
+</code></pre>
+<p>I did use all of these but I also ended up needing to set BDTR as well for PWM output mode.</p>
+</section>
+<section id="gpio-pin-mapping-options-tim2" class="level4">
+<h4 class="anchored" data-anchor-id="gpio-pin-mapping-options-tim2">GPIO Pin Mapping Options (TIM2)</h4>
+<p>PA0 - TIM2_CH1 (AF1)</p>
+<p>PA1 - TIM2_CH2 (AF1)</p>
+<p>PA5 - TIM2_CH1 (AF1)</p>
+<p>PB3 - TIM2_CH2 (AF1)</p>
+<p>Check your specific board’s pinout to ensure the pin is accessible on the nucleo headers.</p>
+<p>I used PA6 because that was the Channel 1 for TIM16.</p>
+</section>
+<section id="summary-configuration-sequence" class="level4">
+<h4 class="anchored" data-anchor-id="summary-configuration-sequence">Summary Configuration Sequence</h4>
+<ol type="1">
+<li>Enable RCC clocks (timer + GPIO)</li>
+<li>Configure GPIO pin for alternate function</li>
+<li>Set PSC and ARR for desired frequency</li>
+<li>Set CCRx for duty cycle</li>
+<li>Configure PWM mode in CCMR register</li>
+<li>Enable output in CCER register</li>
+<li>Enable counter in CR1</li>
+</ol>
+<p>These were the steps I used with the enable RCC clocks and configure GPIO pin in my main function whereas the rest of the steps were held in their own function in my <code>TIMX.c</code> file.</p>
 
 
 
-
+</section>
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -585,6 +914,7 @@ window.Quarto = {
   });
   </script>
 </div> <!-- /content -->
+<script>videojs(video_shortcode_videojs_video1);</script>
 
 
 
