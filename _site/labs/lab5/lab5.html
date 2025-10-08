@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Erin Wang">
+<meta name="dcterms.date" content="2025-10-08">
 
-<title>lab5 – E155 Portfolio</title>
+<title>Lab 5 Report – E155 Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -168,18 +170,345 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#lab-hours" id="toc-lab-hours" class="nav-link active" data-scroll-target="#lab-hours">Lab Hours</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#design-and-testing-methodology" id="toc-design-and-testing-methodology" class="nav-link" data-scroll-target="#design-and-testing-methodology">Design and Testing Methodology</a>
+  <ul class="collapse">
+  <li><a href="#computing-velocity" id="toc-computing-velocity" class="nav-link" data-scroll-target="#computing-velocity">Computing Velocity</a></li>
+  <li><a href="#checking-velocity-at-12v" id="toc-checking-velocity-at-12v" class="nav-link" data-scroll-target="#checking-velocity-at-12v">Checking Velocity at 12V</a></li>
+  <li><a href="#interrupts-versus-manual-polling" id="toc-interrupts-versus-manual-polling" class="nav-link" data-scroll-target="#interrupts-versus-manual-polling">Interrupts versus Manual Polling</a></li>
+  </ul></li>
+  <li><a href="#technical-documentation" id="toc-technical-documentation" class="nav-link" data-scroll-target="#technical-documentation">Technical Documentation</a></li>
+  <li><a href="#schematic" id="toc-schematic" class="nav-link" data-scroll-target="#schematic">Schematic</a></li>
+  <li><a href="#flow-chart" id="toc-flow-chart" class="nav-link" data-scroll-target="#flow-chart">Flow Chart</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#ai-prototype-and-reflection" id="toc-ai-prototype-and-reflection" class="nav-link" data-scroll-target="#ai-prototype-and-reflection">AI Prototype and Reflection</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lab 5 Report</h1>
+</div>
 
 
 
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Erin Wang </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 8, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="lab-hours" class="level2">
+<h2 class="anchored" data-anchor-id="lab-hours">Lab Hours</h2>
+<p>I spent 20 hours on this lab.</p>
+</section>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>Lab 5 involved learning how to use interrupts to quickly and accurately sample inputs by calculating the velocity of a motor using quadrature encoders.</p>
+</section>
+<section id="design-and-testing-methodology" class="level2">
+<h2 class="anchored" data-anchor-id="design-and-testing-methodology">Design and Testing Methodology</h2>
+<section id="computing-velocity" class="level3">
+<h3 class="anchored" data-anchor-id="computing-velocity">Computing Velocity</h3>
+<p>For using a 12V 150RPM motor, the pulses per revolution (PPR) was 408 according to the motor’s datasheet (see <a href="#fig-motordata" class="quarto-xref">Figure&nbsp;1</a>). In order to get the velocity in revolutions per second (RPS), a counter was used to find pulses per second (PPS). Because the lab uses quadrature encoder with an A signal and a B signal for the motor and the interrupt flag waves at the rising edge and falling edge of both A and B, the counter in my program counts how many flags were seen in a 1 second delay needs to divided by 4 in order to find the actual PPS:</p>
+<div id="fig-motordata" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-motordata-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/motordatasheet.jpg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-motordata-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: TS-25GA370H 12V 150 RPM motor datasheet.
+</figcaption>
+</figure>
+</div>
+<p><span class="math display">\[
+PPS = \frac{counter}{4}
+\]</span></p>
+<p>To get RPS, the PPS then needs to account for how many pulses are in one revolution:</p>
+<p><span class="math display">\[
+RPS = \frac{PPS}{PPR} = \frac{PPS}{408}
+\]</span></p>
+<p>Using the above calculations, I derived the speed in revolutions per second. However, for direction this depends on the which clock is leading. The interrupt <code>EXTI1</code> assumes input A is leading and thus if input A and B are not the same, that means this assumption is true, thus the clock is moving clockwise and the counter should be increased (CW is positive). If input A and B are the same, then the assumption is not true, thus the clock is moving counter-clockwise and the counter should be decreased (CCW is negative). The interrupt <code>EXTI2</code> assumes input B is leading and uses the same logic except if the inputs are the same then the clock if moving CCW, and if the inputs are not the same then the clock is moving CW. Having both interrupts is necessary in order to check the rising and falling edges of BOTH A and B inputs.</p>
+</section>
+<section id="checking-velocity-at-12v" class="level3">
+<h3 class="anchored" data-anchor-id="checking-velocity-at-12v">Checking Velocity at 12V</h3>
+<p>Since the motor used is rated for 150 RPM at 12V, I can check that the measured and printed velocity is the same as the actual true velocity. If the motor is moving at 150 RPM this can be converted to RPS:</p>
+<p><span class="math display">\[
+RPS = \frac{RPM}{60} = \frac{150}{60} = 2.5 \: rev/s
+\]</span></p>
+<p>Thus, the measured velocity should be around 2.5 rev/s when the motor is powered at 12V.</p>
+</section>
+<section id="interrupts-versus-manual-polling" class="level3">
+<h3 class="anchored" data-anchor-id="interrupts-versus-manual-polling">Interrupts versus Manual Polling</h3>
+<p>While interrupts stop the main loop from continuing until the interrupt task is done, manual polling happens in parallel or while the main loop is running. This means manual polling misses edges while the delay is running. The pulses the polling misses can be calculated using the motor’s PPR. Using an oscilloscope on the quadrature encodings, I found the quadrature encoder signal was running at 1.86 kHz which is 1860 PPS. Using this I was able to find how many RPS we would miss in the manual polling.</p>
+<p><span class="math display">\[
+RPS_{lost} = \frac{PPS_{quadrature}}{PPR} = \frac{1860}{408} = 4.559 \: rev/s
+\]</span></p>
+<p>Thus, we would lose approximately 5 revolutions per second using manual polling. Because the interrupts capture every edge of the quadrature encoder and stops the main loop from running while the interrupt is handling the interrupt task, the interrupts provide the highest-resolution measurement of the velocity whereas the manual polling loses resolution.</p>
+</section>
+</section>
+<section id="technical-documentation" class="level2">
+<h2 class="anchored" data-anchor-id="technical-documentation">Technical Documentation</h2>
+<p>The source code for the project can be found in the associated <a href="https://github.com/erinlywang/e155-lab5">Github repository</a></p>
+</section>
+<section id="schematic" class="level2">
+<h2 class="anchored" data-anchor-id="schematic">Schematic</h2>
+<div id="fig-schematic" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-schematic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/lab5_schematic.jpg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-schematic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Schematic of the layout including the STM and the motor. The motor is depicted simply as a block here.
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-schematic" class="quarto-xref">Figure&nbsp;2</a> shows the physical layout of the design. The GPIOA pins PA1 and PA2 were chosen for their ability to handle the 5V output from the MCU into the motor.</p>
+</section>
+<section id="flow-chart" class="level2">
+<h2 class="anchored" data-anchor-id="flow-chart">Flow Chart</h2>
+<div id="fig-flow" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-flow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/lab5_flowchart.jpg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-flow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Flow chart of main function and two interrupt functions. Abstracted to only include high-level understandings.
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-flow" class="quarto-xref">Figure&nbsp;3</a> shows the flow of the program including the main function and the interrupt functions for the A and B signals of the quadrature encoder. ## Results and Discussion</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>The design successfully outputs the velocity with the correct direction with at least a 1 Hz update rate. The program measured the velocity to be 2.8 rev/s at 12V which is very close to our expected velocity of 2.5 rev/s. The program utilizes all edges of the quadrature encoders, does not miss any edges at high speeds, reports 0 when the fan is unmoving, and does not report 0 at low speeds (has high resolution).</p>
+<p>Overall a success!</p>
+</section>
+<section id="ai-prototype-and-reflection" class="level2">
+<h2 class="anchored" data-anchor-id="ai-prototype-and-reflection">AI Prototype and Reflection</h2>
+<p>The Claude AI did not pass on the first run. The program included the header <code>"stm32l4xx_hal.h"</code> which was not recognized by Segger. I asked the AI to instead use <code>&lt;stm32l432xx.h&gt;</code>. This change did create a buildable solution. However, there was no code to show the velocity anywhere. So I prompted the AI to output the velocity using printf.</p>
+<p>The AI actually gave me two methods: one for Hardware Encoder Mode that uses TIM2 encoder interface and no interrupts and another for Software Encoder Mode that uses the EXTI interrupts like I did. Another fun thing the AI did was also find the position not just the velocity. To keep things simple I asked just for velocity and to use Method 2.</p>
+<details>
+<summary>
+Method 2: Software Encoder Mode
+</summary>
+<pre><code>/* Quadrature Encoder Interface for STM32L432KC
+ * GPIO Interrupt Mode - Velocity Only
+ * Direct register access without HAL
+ */
+
+#include &lt;stm32l432xx.h&gt;
+#include &lt;stdio.h&gt;
+
+/* ============================================
+ * PRINTF RETARGET FOR SWO/ITM (ST-Link)
+ * ============================================ */
+
+int _write(int file, char *ptr, int len)
+{
+    for(int i = 0; i &lt; len; i++) {
+        ITM_SendChar((*ptr++));
+    }
+    return len;
+}
+
+/* ============================================
+ * GPIO INTERRUPT MODE - VELOCITY CALCULATION
+ * Software quadrature decoding using EXTI interrupts
+ * Connect encoder to PA0 (Channel A) and PA1 (Channel B)
+ * ============================================ */
+
+#define ENCODER_A_PIN 0
+#define ENCODER_B_PIN 1
+
+volatile int32_t encoder_count = 0;
+volatile int32_t encoder_velocity = 0;  // counts per second
+volatile uint8_t last_state = 0;
+
+void Encoder_GPIO_Init(void)
+{
+    // Enable clocks for GPIOA and SYSCFG
+    RCC-&gt;AHB2ENR |= RCC_AHB2ENR_GPIOAEN;
+    RCC-&gt;APB2ENR |= RCC_APB2ENR_SYSCFGEN;
+    
+    // Configure PA0 and PA1 as inputs
+    GPIOA-&gt;MODER &amp;= ~(GPIO_MODER_MODE0 | GPIO_MODER_MODE1);
+    
+    // Enable pull-ups
+    GPIOA-&gt;PUPDR &amp;= ~(GPIO_PUPDR_PUPD0 | GPIO_PUPDR_PUPD1);
+    GPIOA-&gt;PUPDR |= (GPIO_PUPDR_PUPD0_0 | GPIO_PUPDR_PUPD1_0);
+    
+    // Configure EXTI for PA0 and PA1
+    SYSCFG-&gt;EXTICR[0] &amp;= ~(SYSCFG_EXTICR1_EXTI0 | SYSCFG_EXTICR1_EXTI1);
+    // EXTI0 and EXTI1 connected to PA0 and PA1 (value 0 = GPIOA)
+    
+    // Enable rising and falling edge triggers
+    EXTI-&gt;RTSR1 |= (EXTI_RTSR1_RT0 | EXTI_RTSR1_RT1);
+    EXTI-&gt;FTSR1 |= (EXTI_FTSR1_FT0 | EXTI_FTSR1_FT1);
+    
+    // Unmask interrupts
+    EXTI-&gt;IMR1 |= (EXTI_IMR1_IM0 | EXTI_IMR1_IM1);
+    
+    // Enable NVIC interrupts
+    NVIC_SetPriority(EXTI0_IRQn, 2);
+    NVIC_EnableIRQ(EXTI0_IRQn);
+    
+    NVIC_SetPriority(EXTI1_IRQn, 2);
+    NVIC_EnableIRQ(EXTI1_IRQn);
+    
+    // Read initial state
+    last_state = ((GPIOA-&gt;IDR &amp; (1 &lt;&lt; ENCODER_A_PIN)) ? 2 : 0) | 
+                 ((GPIOA-&gt;IDR &amp; (1 &lt;&lt; ENCODER_B_PIN)) ? 1 : 0);
+}
+
+void Encoder_Process(void)
+{
+    uint8_t current_state = ((GPIOA-&gt;IDR &amp; (1 &lt;&lt; ENCODER_A_PIN)) ? 2 : 0) | 
+                            ((GPIOA-&gt;IDR &amp; (1 &lt;&lt; ENCODER_B_PIN)) ? 1 : 0);
+    
+    // State transition table for quadrature decoding
+    int8_t direction = 0;
+    uint8_t transition = (last_state &lt;&lt; 2) | current_state;
+    
+    switch(transition) {
+        // Clockwise transitions
+        case 0b0001: case 0b0111: case 0b1110: case 0b1000:
+            direction = 1;
+            break;
+        // Counter-clockwise transitions
+        case 0b0010: case 0b1011: case 0b1101: case 0b0100:
+            direction = -1;
+            break;
+        // Invalid or no change
+        default:
+            direction = 0;
+            break;
+    }
+    
+    encoder_count += direction;
+    last_state = current_state;
+}
+
+// EXTI0 interrupt handler (Channel A on PA0)
+void EXTI0_IRQHandler(void)
+{
+    if(EXTI-&gt;PR1 &amp; EXTI_PR1_PIF0) {
+        EXTI-&gt;PR1 = EXTI_PR1_PIF0;  // Clear pending bit
+        Encoder_Process();
+    }
+}
+
+// EXTI1 interrupt handler (Channel B on PA1)
+void EXTI1_IRQHandler(void)
+{
+    if(EXTI-&gt;PR1 &amp; EXTI_PR1_PIF1) {
+        EXTI-&gt;PR1 = EXTI_PR1_PIF1;  // Clear pending bit
+        Encoder_Process();
+    }
+}
+
+void Encoder_CalculateVelocity(void)
+{
+    static int32_t last_count = 0;
+    int32_t current_count = encoder_count;
+    
+    // Calculate change in count (delta)
+    int32_t delta = current_count - last_count;
+    
+    // Velocity in counts per second (assuming 100ms sampling = 10 Hz)
+    encoder_velocity = delta * 10;
+    
+    last_count = current_count;
+}
+
+int32_t Encoder_GetVelocity(void)
+{
+    return encoder_velocity;
+}
+
+/* ============================================
+ * SYSTICK TIMER FOR VELOCITY SAMPLING
+ * ============================================ */
+
+void SysTick_Init(uint32_t ticks)
+{
+    SysTick-&gt;LOAD = ticks - 1;
+    SysTick-&gt;VAL = 0;
+    SysTick-&gt;CTRL = SysTick_CTRL_CLKSOURCE_Msk | 
+                    SysTick_CTRL_TICKINT_Msk | 
+                    SysTick_CTRL_ENABLE_Msk;
+}
+
+void SysTick_Handler(void)
+{
+    // Calculate velocity every 100ms
+    Encoder_CalculateVelocity();
+}
+
+/* ============================================
+ * USAGE EXAMPLE
+ * ============================================ */
+
+// Simple delay function (adjust based on your clock speed)
+void delay_ms(uint32_t ms)
+{
+    for(uint32_t i = 0; i &lt; ms * 4000; i++) {
+        __NOP();
+    }
+}
+
+int main(void)
+{
+    // Initialize GPIO interrupt mode encoder
+    Encoder_GPIO_Init();
+    
+    // Initialize SysTick for 100ms interrupts (assuming 4MHz clock)
+    // Adjust this value based on your actual system clock
+    SysTick_Init(400000);  // 4MHz / 10 = 400000 for 100ms
+    
+    while(1) {
+        // Read and print velocity only
+        int32_t velocity = Encoder_GetVelocity();  // counts per second
+        
+        printf("Velocity: %ld counts/sec\r\n", velocity);
+        
+        delay_ms(100);
+    }
+}
+</code></pre>
+</details>
+<p>When I ran this in debug mode, the velocity was output as counts per second, but did not match the expected velocities. This is likely due to the integer nature of the variables in the Claude AI. The output would jump between 10 counts/sec to -10 counts/sec and sometimes 0 counts/sec in between. However, when the motor is stationary, the code does output 0 counts/sec correctly. Overall, the Claude AI was not very successful for this prompt.</p>
 
 
 
-
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
