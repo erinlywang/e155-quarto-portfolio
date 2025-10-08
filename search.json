@@ -21,6 +21,69 @@
     "text": "Reflections on Lab\nThe lab was definitely difficult with learning how to use Radiant instead of Quartus Prime. I also found it tricky understanding how to program the blinking LED2 using the counter.\nI feel a lot more confident in understanding what is going on in a testbench program because before in E85 it seemed like somewhat of a black box to me.\nI’m still struggling with figuring out how to separate modules and writing testbenches for modules that don’t require a testvector file. I would like to continue strengthening my ability to write new modules and testbenches for those modules in a way that works in the overall top module. The trickiest module for this was trying to separate the clock divider for the blinking LED2 into another module. I ended up not doing a separate module because the code worked really well in the top module and I ran out of time.\nIf I have more time I would like to go back and retry making an led_blinker module that can have the HSOSC module outside of the led_blinker module and feed the internal clock int_osc into the blinking led module."
   },
   {
+    "objectID": "labs/lab5/lab5.html",
+    "href": "labs/lab5/lab5.html",
+    "title": "Lab 5 Report",
+    "section": "",
+    "text": "I spent 20 hours on this lab."
+  },
+  {
+    "objectID": "labs/lab5/lab5.html#lab-hours",
+    "href": "labs/lab5/lab5.html#lab-hours",
+    "title": "Lab 5 Report",
+    "section": "",
+    "text": "I spent 20 hours on this lab."
+  },
+  {
+    "objectID": "labs/lab5/lab5.html#introduction",
+    "href": "labs/lab5/lab5.html#introduction",
+    "title": "Lab 5 Report",
+    "section": "Introduction",
+    "text": "Introduction\nLab 5 involved learning how to use interrupts to quickly and accurately sample inputs by calculating the velocity of a motor using quadrature encoders."
+  },
+  {
+    "objectID": "labs/lab5/lab5.html#design-and-testing-methodology",
+    "href": "labs/lab5/lab5.html#design-and-testing-methodology",
+    "title": "Lab 5 Report",
+    "section": "Design and Testing Methodology",
+    "text": "Design and Testing Methodology\n\nComputing Velocity\nFor using a 12V 150RPM motor, the pulses per revolution (PPR) was 408 according to the motor’s datasheet (see Figure 1). In order to get the velocity in revolutions per second (RPS), a counter was used to find pulses per second (PPS). Because the lab uses quadrature encoder with an A signal and a B signal for the motor and the interrupt flag waves at the rising edge and falling edge of both A and B, the counter in my program counts how many flags were seen in a 1 second delay needs to divided by 4 in order to find the actual PPS:\n\n\n\n\n\n\nFigure 1: TS-25GA370H 12V 150 RPM motor datasheet.\n\n\n\n\\[\nPPS = \\frac{counter}{4}\n\\]\nTo get RPS, the PPS then needs to account for how many pulses are in one revolution:\n\\[\nRPS = \\frac{PPS}{PPR} = \\frac{PPS}{408}\n\\]\nUsing the above calculations, I derived the speed in revolutions per second. However, for direction this depends on the which clock is leading. The interrupt EXTI1 assumes input A is leading and thus if input A and B are not the same, that means this assumption is true, thus the clock is moving clockwise and the counter should be increased (CW is positive). If input A and B are the same, then the assumption is not true, thus the clock is moving counter-clockwise and the counter should be decreased (CCW is negative). The interrupt EXTI2 assumes input B is leading and uses the same logic except if the inputs are the same then the clock if moving CCW, and if the inputs are not the same then the clock is moving CW. Having both interrupts is necessary in order to check the rising and falling edges of BOTH A and B inputs.\n\n\nChecking Velocity at 12V\nSince the motor used is rated for 150 RPM at 12V, I can check that the measured and printed velocity is the same as the actual true velocity. If the motor is moving at 150 RPM this can be converted to RPS:\n\\[\nRPS = \\frac{RPM}{60} = \\frac{150}{60} = 2.5 \\: rev/s\n\\]\nThus, the measured velocity should be around 2.5 rev/s when the motor is powered at 12V.\n\n\nInterrupts versus Manual Polling\nWhile interrupts stop the main loop from continuing until the interrupt task is done, manual polling happens in parallel or while the main loop is running. This means manual polling misses edges while the delay is running. The pulses the polling misses can be calculated using the motor’s PPR. Using an oscilloscope on the quadrature encodings, I found the quadrature encoder signal was running at 1.86 kHz which is 1860 PPS. Using this I was able to find how many RPS we would miss in the manual polling.\n\\[\nRPS_{lost} = \\frac{PPS_{quadrature}}{PPR} = \\frac{1860}{408} = 4.559 \\: rev/s\n\\]\nThus, we would lose approximately 5 revolutions per second using manual polling. Because the interrupts capture every edge of the quadrature encoder and stops the main loop from running while the interrupt is handling the interrupt task, the interrupts provide the highest-resolution measurement of the velocity whereas the manual polling loses resolution."
+  },
+  {
+    "objectID": "labs/lab5/lab5.html#technical-documentation",
+    "href": "labs/lab5/lab5.html#technical-documentation",
+    "title": "Lab 5 Report",
+    "section": "Technical Documentation",
+    "text": "Technical Documentation\nThe source code for the project can be found in the associated Github repository"
+  },
+  {
+    "objectID": "labs/lab5/lab5.html#schematic",
+    "href": "labs/lab5/lab5.html#schematic",
+    "title": "Lab 5 Report",
+    "section": "Schematic",
+    "text": "Schematic\n\n\n\n\n\n\nFigure 2: Schematic of the layout including the STM and the motor. The motor is depicted simply as a block here.\n\n\n\nFigure 2 shows the physical layout of the design. The GPIOA pins PA1 and PA2 were chosen for their ability to handle the 5V output from the MCU into the motor."
+  },
+  {
+    "objectID": "labs/lab5/lab5.html#flow-chart",
+    "href": "labs/lab5/lab5.html#flow-chart",
+    "title": "Lab 5 Report",
+    "section": "Flow Chart",
+    "text": "Flow Chart\n\n\n\n\n\n\nFigure 3: Flow chart of main function and two interrupt functions. Abstracted to only include high-level understandings.\n\n\n\nFigure 3 shows the flow of the program including the main function and the interrupt functions for the A and B signals of the quadrature encoder. ## Results and Discussion"
+  },
+  {
+    "objectID": "labs/lab5/lab5.html#conclusion",
+    "href": "labs/lab5/lab5.html#conclusion",
+    "title": "Lab 5 Report",
+    "section": "Conclusion",
+    "text": "Conclusion\nThe design successfully outputs the velocity with the correct direction with at least a 1 Hz update rate. The program measured the velocity to be 2.8 rev/s at 12V which is very close to our expected velocity of 2.5 rev/s. The program utilizes all edges of the quadrature encoders, does not miss any edges at high speeds, reports 0 when the fan is unmoving, and does not report 0 at low speeds (has high resolution).\nOverall a success!"
+  },
+  {
+    "objectID": "labs/lab5/lab5.html#ai-prototype-and-reflection",
+    "href": "labs/lab5/lab5.html#ai-prototype-and-reflection",
+    "title": "Lab 5 Report",
+    "section": "AI Prototype and Reflection",
+    "text": "AI Prototype and Reflection\nThe Claude AI did not pass on the first run. The program included the header \"stm32l4xx_hal.h\" which was not recognized by Segger. I asked the AI to instead use &lt;stm32l432xx.h&gt;. This change did create a buildable solution. However, there was no code to show the velocity anywhere. So I prompted the AI to output the velocity using printf.\nThe AI actually gave me two methods: one for Hardware Encoder Mode that uses TIM2 encoder interface and no interrupts and another for Software Encoder Mode that uses the EXTI interrupts like I did. Another fun thing the AI did was also find the position not just the velocity. To keep things simple I asked just for velocity and to use Method 2.\n\n\nMethod 2: Software Encoder Mode\n\n/* Quadrature Encoder Interface for STM32L432KC\n * GPIO Interrupt Mode - Velocity Only\n * Direct register access without HAL\n */\n\n#include &lt;stm32l432xx.h&gt;\n#include &lt;stdio.h&gt;\n\n/* ============================================\n * PRINTF RETARGET FOR SWO/ITM (ST-Link)\n * ============================================ */\n\nint _write(int file, char *ptr, int len)\n{\n    for(int i = 0; i &lt; len; i++) {\n        ITM_SendChar((*ptr++));\n    }\n    return len;\n}\n\n/* ============================================\n * GPIO INTERRUPT MODE - VELOCITY CALCULATION\n * Software quadrature decoding using EXTI interrupts\n * Connect encoder to PA0 (Channel A) and PA1 (Channel B)\n * ============================================ */\n\n#define ENCODER_A_PIN 0\n#define ENCODER_B_PIN 1\n\nvolatile int32_t encoder_count = 0;\nvolatile int32_t encoder_velocity = 0;  // counts per second\nvolatile uint8_t last_state = 0;\n\nvoid Encoder_GPIO_Init(void)\n{\n    // Enable clocks for GPIOA and SYSCFG\n    RCC-&gt;AHB2ENR |= RCC_AHB2ENR_GPIOAEN;\n    RCC-&gt;APB2ENR |= RCC_APB2ENR_SYSCFGEN;\n    \n    // Configure PA0 and PA1 as inputs\n    GPIOA-&gt;MODER &= ~(GPIO_MODER_MODE0 | GPIO_MODER_MODE1);\n    \n    // Enable pull-ups\n    GPIOA-&gt;PUPDR &= ~(GPIO_PUPDR_PUPD0 | GPIO_PUPDR_PUPD1);\n    GPIOA-&gt;PUPDR |= (GPIO_PUPDR_PUPD0_0 | GPIO_PUPDR_PUPD1_0);\n    \n    // Configure EXTI for PA0 and PA1\n    SYSCFG-&gt;EXTICR[0] &= ~(SYSCFG_EXTICR1_EXTI0 | SYSCFG_EXTICR1_EXTI1);\n    // EXTI0 and EXTI1 connected to PA0 and PA1 (value 0 = GPIOA)\n    \n    // Enable rising and falling edge triggers\n    EXTI-&gt;RTSR1 |= (EXTI_RTSR1_RT0 | EXTI_RTSR1_RT1);\n    EXTI-&gt;FTSR1 |= (EXTI_FTSR1_FT0 | EXTI_FTSR1_FT1);\n    \n    // Unmask interrupts\n    EXTI-&gt;IMR1 |= (EXTI_IMR1_IM0 | EXTI_IMR1_IM1);\n    \n    // Enable NVIC interrupts\n    NVIC_SetPriority(EXTI0_IRQn, 2);\n    NVIC_EnableIRQ(EXTI0_IRQn);\n    \n    NVIC_SetPriority(EXTI1_IRQn, 2);\n    NVIC_EnableIRQ(EXTI1_IRQn);\n    \n    // Read initial state\n    last_state = ((GPIOA-&gt;IDR & (1 &lt;&lt; ENCODER_A_PIN)) ? 2 : 0) | \n                 ((GPIOA-&gt;IDR & (1 &lt;&lt; ENCODER_B_PIN)) ? 1 : 0);\n}\n\nvoid Encoder_Process(void)\n{\n    uint8_t current_state = ((GPIOA-&gt;IDR & (1 &lt;&lt; ENCODER_A_PIN)) ? 2 : 0) | \n                            ((GPIOA-&gt;IDR & (1 &lt;&lt; ENCODER_B_PIN)) ? 1 : 0);\n    \n    // State transition table for quadrature decoding\n    int8_t direction = 0;\n    uint8_t transition = (last_state &lt;&lt; 2) | current_state;\n    \n    switch(transition) {\n        // Clockwise transitions\n        case 0b0001: case 0b0111: case 0b1110: case 0b1000:\n            direction = 1;\n            break;\n        // Counter-clockwise transitions\n        case 0b0010: case 0b1011: case 0b1101: case 0b0100:\n            direction = -1;\n            break;\n        // Invalid or no change\n        default:\n            direction = 0;\n            break;\n    }\n    \n    encoder_count += direction;\n    last_state = current_state;\n}\n\n// EXTI0 interrupt handler (Channel A on PA0)\nvoid EXTI0_IRQHandler(void)\n{\n    if(EXTI-&gt;PR1 & EXTI_PR1_PIF0) {\n        EXTI-&gt;PR1 = EXTI_PR1_PIF0;  // Clear pending bit\n        Encoder_Process();\n    }\n}\n\n// EXTI1 interrupt handler (Channel B on PA1)\nvoid EXTI1_IRQHandler(void)\n{\n    if(EXTI-&gt;PR1 & EXTI_PR1_PIF1) {\n        EXTI-&gt;PR1 = EXTI_PR1_PIF1;  // Clear pending bit\n        Encoder_Process();\n    }\n}\n\nvoid Encoder_CalculateVelocity(void)\n{\n    static int32_t last_count = 0;\n    int32_t current_count = encoder_count;\n    \n    // Calculate change in count (delta)\n    int32_t delta = current_count - last_count;\n    \n    // Velocity in counts per second (assuming 100ms sampling = 10 Hz)\n    encoder_velocity = delta * 10;\n    \n    last_count = current_count;\n}\n\nint32_t Encoder_GetVelocity(void)\n{\n    return encoder_velocity;\n}\n\n/* ============================================\n * SYSTICK TIMER FOR VELOCITY SAMPLING\n * ============================================ */\n\nvoid SysTick_Init(uint32_t ticks)\n{\n    SysTick-&gt;LOAD = ticks - 1;\n    SysTick-&gt;VAL = 0;\n    SysTick-&gt;CTRL = SysTick_CTRL_CLKSOURCE_Msk | \n                    SysTick_CTRL_TICKINT_Msk | \n                    SysTick_CTRL_ENABLE_Msk;\n}\n\nvoid SysTick_Handler(void)\n{\n    // Calculate velocity every 100ms\n    Encoder_CalculateVelocity();\n}\n\n/* ============================================\n * USAGE EXAMPLE\n * ============================================ */\n\n// Simple delay function (adjust based on your clock speed)\nvoid delay_ms(uint32_t ms)\n{\n    for(uint32_t i = 0; i &lt; ms * 4000; i++) {\n        __NOP();\n    }\n}\n\nint main(void)\n{\n    // Initialize GPIO interrupt mode encoder\n    Encoder_GPIO_Init();\n    \n    // Initialize SysTick for 100ms interrupts (assuming 4MHz clock)\n    // Adjust this value based on your actual system clock\n    SysTick_Init(400000);  // 4MHz / 10 = 400000 for 100ms\n    \n    while(1) {\n        // Read and print velocity only\n        int32_t velocity = Encoder_GetVelocity();  // counts per second\n        \n        printf(\"Velocity: %ld counts/sec\\r\\n\", velocity);\n        \n        delay_ms(100);\n    }\n}\n\n\nWhen I ran this in debug mode, the velocity was output as counts per second, but did not match the expected velocities. This is likely due to the integer nature of the variables in the Claude AI. The output would jump between 10 counts/sec to -10 counts/sec and sometimes 0 counts/sec in between. However, when the motor is stationary, the code does output 0 counts/sec correctly. Overall, the Claude AI was not very successful for this prompt."
+  },
+  {
     "objectID": "labs/lab3/lab3.html",
     "href": "labs/lab3/lab3.html",
     "title": "Lab 3 Report",
