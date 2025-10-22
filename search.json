@@ -348,5 +348,68 @@
     "title": "Lab 4 Report",
     "section": "AI Prototype and Reflection",
     "text": "AI Prototype and Reflection\n\nBest Timer Choice: TIM2\nThe Claude AI said that the best timer choice would be TIM2 because it has a 32-bit timer which allows PWM output mode, gives more flexibility for the prescaler, and has multiple channels that can be routed to the GPIO pins via alternate functions. However, the AI said alternatively TIM1 or TIM15/16 also work well just with a smaller counter.\nThis makes sense to me as the flexibility would be an important part to having a greater range of durations to be able to play as well as less concern with overflowing the counter.\n\n\nRelevant Formulae\nAccording to Claudem the output frequency is determined by:\nf_out = f_timer / ((PSC + 1) × (ARR + 1))\nClaude defines f_{out} as the timer clock frequency of typically 80 MHz.\nFor a 50% duty cycle PWM, Claude writes the equation as\nCCRx = ARR / 2\nBoth of the equations above are the equations I used to calculate my counter frequency and a 50% duty cycle.\n\n\nExample Calculations\nThe following is quoted from the Claude AI:\n\n\nClaude AI Example Calculations\n\nFor 220 Hz with 80 MHz timer clock:\nTarget count = 80,000,000 / 220 = 363,636 Choose PSC = 99 (divides by 100) ARR = 80,000,000 / (100 × 220) - 1 = 3,636 - 1 = 3,635 Actual frequency = 80,000,000 / (100 × 3,636) = 220.02 Hz\nFor 1 kHz:\nPSC = 79 (divides by 80) ARR = 80,000,000 / (80 × 1000) - 1 = 999 Actual frequency = 1,000 Hz exactly\n\nI actually really like how the AI calcualted the right ARR. I simply knew from debugging my program that the division rounds down and so I used that when calculating the target. However, it seems like the AI is changing PSC between the two frequencies whereas my program only uses one PSC to capture the full range from 220 Hz to 1kHz.\n\n\nKey Register to Configure\n\n1. RCC Registers - Enable Clocks\nRCC-&gt;APB1ENR1 |= RCC_APB1ENR1_TIM2EN;  // Enable TIM2 clock\n\nRCC-&gt;AHB2ENR |= RCC_AHB2ENR_GPIOAEN;   // Enable GPIO port clock\n\nBecause I used TIM15/16 I enabled APB2ENR1 and AHB2ENR.\n\n\n2. GPIO Configuration - Set alternate function\nFor TIM2_CH1 on PA0 (example):\nGPIOA-&gt;MODER &= ~GPIO_MODER_MODE0;     // Clear mode bits\n\nGPIOA-&gt;MODER |= GPIO_MODER_MODE0_1;    // Set to alternate function\n\nGPIOA-&gt;AFR[0] |= (1 &lt;&lt; GPIO_AFRL_AFSEL0_Pos);  // AF1 for TIM2\n\nI used the pinMode function given to us in the tutorial GPIO header, however I did need to set AFR for PIN16 for my output PWM signal.\n\n\n3. TIM2 Registers\nTIM2-&gt;PSC = 99; // For 220 Hz example\n\nTIM2-&gt;CCR1 = 1818;  // 50% duty cycle (ARR/2)\n\nTIM2-&gt;CCMR1 |= (6 &lt;&lt; TIM_CCMR1_OC1M_Pos);  // PWM mode 1\n\nTIM2-&gt;CCMR1 |= TIM_CCMR1_OC1PE;            // Preload enable\n\nTIM2-&gt;CCER |= TIM_CCER_CC1E;  // Enable output on channel 1\n\nTIM2-&gt;CR1 |= TIM_CR1_ARPE;  // Auto-reload preload enable\n\nTIM2-&gt;CR1 |= TIM_CR1_CEN;   // Counter enable (start timer)\n\nTIM2-&gt;EGR |= TIM_EGR_UG;  // Generate update event to load registers\n\nI did use all of these but I also ended up needing to set BDTR as well for PWM output mode.\n\n\nGPIO Pin Mapping Options (TIM2)\nPA0 - TIM2_CH1 (AF1)\nPA1 - TIM2_CH2 (AF1)\nPA5 - TIM2_CH1 (AF1)\nPB3 - TIM2_CH2 (AF1)\nCheck your specific board’s pinout to ensure the pin is accessible on the nucleo headers.\nI used PA6 because that was the Channel 1 for TIM16.\n\n\nSummary Configuration Sequence\n\nEnable RCC clocks (timer + GPIO)\nConfigure GPIO pin for alternate function\nSet PSC and ARR for desired frequency\nSet CCRx for duty cycle\nConfigure PWM mode in CCMR register\nEnable output in CCER register\nEnable counter in CR1\n\nThese were the steps I used with the enable RCC clocks and configure GPIO pin in my main function whereas the rest of the steps were held in their own function in my TIMX.c file."
+  },
+  {
+    "objectID": "labs/lab6/lab6.html",
+    "href": "labs/lab6/lab6.html",
+    "title": "Lab 6 Report",
+    "section": "",
+    "text": "I spent 45 hours on this lab."
+  },
+  {
+    "objectID": "labs/lab6/lab6.html#lab-hours",
+    "href": "labs/lab6/lab6.html#lab-hours",
+    "title": "Lab 6 Report",
+    "section": "",
+    "text": "I spent 45 hours on this lab."
+  },
+  {
+    "objectID": "labs/lab6/lab6.html#introduction",
+    "href": "labs/lab6/lab6.html#introduction",
+    "title": "Lab 6 Report",
+    "section": "Introduction",
+    "text": "Introduction\nLab 6 involved learning how to use the SPI and UART interface to interact with a DS1722 temperature sensor and upload the temperature data onto an HTML website. The lab also included allowing users to choose temperature resolution through the website."
+  },
+  {
+    "objectID": "labs/lab6/lab6.html#design-and-testing-methodology",
+    "href": "labs/lab6/lab6.html#design-and-testing-methodology",
+    "title": "Lab 6 Report",
+    "section": "Design and Testing Methodology",
+    "text": "Design and Testing Methodology\n\nChoosing Baud Rate\nThe DS1722 has a maximum input SCLK frequency of 5.0 MHz. Because the MCU SPI is running at 80 MHz and the baud rate divides the clock as follows:\n\\[\nSCLK_{freq} = \\frac{SPI}{2^{BR+1}}\n\\]\nI chose a BR = 4 for a SCLK frequency of 2.5 MHz.\n\n\nCalculating Temperature\nThe MSB of the temperature is formatted in two’s complement. To convert to decimal, I checked whether the value was negative (the most significant bit is 1), and if so I inverted the bits then added one and cast the negative of the result to a double. If the value was positive (the most significant bit is 0) then I simply cast the value to a double.\nThe LSB of the temperature is in fractions or negative powers of two. So I scanned from the least significant bit to the most significant bit and calculated the appropriate negative power of two before adding the results from each bit together.\nThe final temperature is the decimal version of the MSB and the LSB added together."
+  },
+  {
+    "objectID": "labs/lab6/lab6.html#technical-documentation",
+    "href": "labs/lab6/lab6.html#technical-documentation",
+    "title": "Lab 6 Report",
+    "section": "Technical Documentation",
+    "text": "Technical Documentation\nThe source code for the project can be found in the associated Github repository"
+  },
+  {
+    "objectID": "labs/lab6/lab6.html#schematic",
+    "href": "labs/lab6/lab6.html#schematic",
+    "title": "Lab 6 Report",
+    "section": "Schematic",
+    "text": "Schematic\n\n\n\n\n\n\nFigure 1: Schematic of the layout including the STM and the DS1722. The LED connected to the website control is not pictured jere.\n\n\n\nFigure 1 shows the physical layout of the design. The GPIOB pin PB0 was chosen for the chip enable CE since it does not interact with the other peripherals. GPIOB pins PB3, PB4, and PB5 were chosen from the datasheet for the alternate functions of SCLK, MISO, and MOSI respectively."
+  },
+  {
+    "objectID": "labs/lab6/lab6.html#results-and-discussion",
+    "href": "labs/lab6/lab6.html#results-and-discussion",
+    "title": "Lab 6 Report",
+    "section": "Results and Discussion",
+    "text": "Results and Discussion\n\nLogic Analyzer: SPI Transaction (a Write and a Read)\n\n\n\n\n\n\nFigure 2: Oscilloscope trace of the Logic Analyzer for a write of 0xE0 to the DS1722 configuration register and a read from the DS1722 configuration register. The value written and value read are the same.\n\n\n\nFigure 2 shows the transaction for a write to the DS1722 configuration register and a read from the DS1722 configuration register on the Logic Analyzer including the SPI decoding. It can be seen that the value written to the register matches that read from the register."
+  },
+  {
+    "objectID": "labs/lab6/lab6.html#conclusion",
+    "href": "labs/lab6/lab6.html#conclusion",
+    "title": "Lab 6 Report",
+    "section": "Conclusion",
+    "text": "Conclusion\nThe design successfully outputs the temperature onto the website and increases with higher temperatures as well as decreases to lower temperatures. The nominal value seems to be around 27 degrees C, which is notably a little high for room temperature (22 degrees C). The resolution also changes with the input buttons with 8-bit having the smallest resolution and 12-bit having the largest resolution. The LED buttons toggle the LED and update the state on the website.\nOverall I’d deem this lab a success! However, I’d love to get some insight into some of the struggles I had where when writing the last four bits of the configuration register, whenever I’d read back from the configuration register it would be shifted (say I write 0xE2, then I’d read 0xE4). I was able to counteract this in my function to set the temperature resolution, but I was wondering where that issue might have come from."
+  },
+  {
+    "objectID": "labs/lab6/lab6.html#ai-prototype-and-reflection",
+    "href": "labs/lab6/lab6.html#ai-prototype-and-reflection",
+    "title": "Lab 6 Report",
+    "section": "AI Prototype and Reflection",
+    "text": "AI Prototype and Reflection\nOn Claude, after typing in the prompt, it actually ran the HTML for me with a really cool looking website (see Figure 3)!\n\n\n\n\n\n\nFigure 3: Claude AI’s website for the temperature monitor after the first prompt.\n\n\n\nThe temperature was around what room temperature is (22-24°C) which is reasonable. I really like the layout and how quickly the temperature changed. I liked how the LED on/off wasn’t just a button but a slider and that the OFF symbol would glow when the slider was flipped to “ON”. I also thought the emojis and theming of the overall HTML was really nice and easy to follow. I like how resolution was about decimal places rather than a “bit” which is more user friendly.\nThe second prompt put a really big delay between readings which I found doesn’t work very well with the SPI interface and the temperature readings were stuck at 0.000000 (which is quite chilly in my opinion). The code itself seemed quite reasonable, but was much shorter than my code and also didn’t include the UART interface. The code did not work for this prompt nor did any goading get it closer."
   }
 ]

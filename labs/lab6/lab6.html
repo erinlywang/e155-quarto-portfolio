@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Erin Wang">
+<meta name="dcterms.date" content="2025-10-22">
 
-<title>lab6 – E155 Portfolio</title>
+<title>Lab 6 Report – E155 Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -168,18 +170,147 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#lab-hours" id="toc-lab-hours" class="nav-link active" data-scroll-target="#lab-hours">Lab Hours</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#design-and-testing-methodology" id="toc-design-and-testing-methodology" class="nav-link" data-scroll-target="#design-and-testing-methodology">Design and Testing Methodology</a>
+  <ul class="collapse">
+  <li><a href="#choosing-baud-rate" id="toc-choosing-baud-rate" class="nav-link" data-scroll-target="#choosing-baud-rate">Choosing Baud Rate</a></li>
+  <li><a href="#calculating-temperature" id="toc-calculating-temperature" class="nav-link" data-scroll-target="#calculating-temperature">Calculating Temperature</a></li>
+  </ul></li>
+  <li><a href="#technical-documentation" id="toc-technical-documentation" class="nav-link" data-scroll-target="#technical-documentation">Technical Documentation</a></li>
+  <li><a href="#schematic" id="toc-schematic" class="nav-link" data-scroll-target="#schematic">Schematic</a></li>
+  <li><a href="#results-and-discussion" id="toc-results-and-discussion" class="nav-link" data-scroll-target="#results-and-discussion">Results and Discussion</a>
+  <ul class="collapse">
+  <li><a href="#logic-analyzer-spi-transaction-a-write-and-a-read" id="toc-logic-analyzer-spi-transaction-a-write-and-a-read" class="nav-link" data-scroll-target="#logic-analyzer-spi-transaction-a-write-and-a-read">Logic Analyzer: SPI Transaction (a Write and a Read)</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#ai-prototype-and-reflection" id="toc-ai-prototype-and-reflection" class="nav-link" data-scroll-target="#ai-prototype-and-reflection">AI Prototype and Reflection</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lab 6 Report</h1>
+</div>
 
 
 
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Erin Wang </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 22, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="lab-hours" class="level2">
+<h2 class="anchored" data-anchor-id="lab-hours">Lab Hours</h2>
+<p>I spent 45 hours on this lab.</p>
+</section>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>Lab 6 involved learning how to use the SPI and UART interface to interact with a DS1722 temperature sensor and upload the temperature data onto an HTML website. The lab also included allowing users to choose temperature resolution through the website.</p>
+</section>
+<section id="design-and-testing-methodology" class="level2">
+<h2 class="anchored" data-anchor-id="design-and-testing-methodology">Design and Testing Methodology</h2>
+<section id="choosing-baud-rate" class="level3">
+<h3 class="anchored" data-anchor-id="choosing-baud-rate">Choosing Baud Rate</h3>
+<p>The DS1722 has a maximum input SCLK frequency of 5.0 MHz. Because the MCU SPI is running at 80 MHz and the baud rate divides the clock as follows:</p>
+<p><span class="math display">\[
+SCLK_{freq} = \frac{SPI}{2^{BR+1}}
+\]</span></p>
+<p>I chose a BR = 4 for a SCLK frequency of 2.5 MHz.</p>
+</section>
+<section id="calculating-temperature" class="level3">
+<h3 class="anchored" data-anchor-id="calculating-temperature">Calculating Temperature</h3>
+<p>The <code>MSB</code> of the temperature is formatted in two’s complement. To convert to decimal, I checked whether the value was negative (the most significant bit is 1), and if so I inverted the bits then added one and cast the negative of the result to a double. If the value was positive (the most significant bit is 0) then I simply cast the value to a double.</p>
+<p>The <code>LSB</code> of the temperature is in fractions or negative powers of two. So I scanned from the least significant bit to the most significant bit and calculated the appropriate negative power of two before adding the results from each bit together.</p>
+<p>The final temperature is the decimal version of the <code>MSB</code> and the <code>LSB</code> added together.</p>
+</section>
+</section>
+<section id="technical-documentation" class="level2">
+<h2 class="anchored" data-anchor-id="technical-documentation">Technical Documentation</h2>
+<p>The source code for the project can be found in the associated <a href="https://github.com/erinlywang/e155-lab6">Github repository</a></p>
+</section>
+<section id="schematic" class="level2">
+<h2 class="anchored" data-anchor-id="schematic">Schematic</h2>
+<div id="fig-schematic" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-schematic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/lab6_schematic.jpg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-schematic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Schematic of the layout including the STM and the DS1722. The LED connected to the website control is not pictured jere.
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-schematic" class="quarto-xref">Figure&nbsp;1</a> shows the physical layout of the design. The GPIOB pin PB0 was chosen for the chip enable <code>CE</code> since it does not interact with the other peripherals. GPIOB pins PB3, PB4, and PB5 were chosen from the datasheet for the alternate functions of <code>SCLK</code>, <code>MISO</code>, and <code>MOSI</code> respectively.</p>
+</section>
+<section id="results-and-discussion" class="level2">
+<h2 class="anchored" data-anchor-id="results-and-discussion">Results and Discussion</h2>
+<section id="logic-analyzer-spi-transaction-a-write-and-a-read" class="level3">
+<h3 class="anchored" data-anchor-id="logic-analyzer-spi-transaction-a-write-and-a-read">Logic Analyzer: SPI Transaction (a Write and a Read)</h3>
+<div id="fig-decoder" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-decoder-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/decoder_rw.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-decoder-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Oscilloscope trace of the Logic Analyzer for a write of 0xE0 to the DS1722 configuration register and a read from the DS1722 configuration register. The value written and value read are the same.
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-decoder" class="quarto-xref">Figure&nbsp;2</a> shows the transaction for a write to the DS1722 configuration register and a read from the DS1722 configuration register on the Logic Analyzer including the SPI decoding. It can be seen that the value written to the register matches that read from the register.</p>
+</section>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>The design successfully outputs the temperature onto the website and increases with higher temperatures as well as decreases to lower temperatures. The nominal value seems to be around 27 degrees C, which is notably a little high for room temperature (22 degrees C). The resolution also changes with the input buttons with 8-bit having the smallest resolution and 12-bit having the largest resolution. The LED buttons toggle the LED and update the state on the website.</p>
+<p>Overall I’d deem this lab a success! However, I’d love to get some insight into some of the struggles I had where when writing the last four bits of the configuration register, whenever I’d read back from the configuration register it would be shifted (say I write 0xE2, then I’d read 0xE4). I was able to counteract this in my function to set the temperature resolution, but I was wondering where that issue might have come from.</p>
+</section>
+<section id="ai-prototype-and-reflection" class="level2">
+<h2 class="anchored" data-anchor-id="ai-prototype-and-reflection">AI Prototype and Reflection</h2>
+<p>On Claude, after typing in the prompt, it actually ran the HTML for me with a really cool looking website (see <a href="#fig-aihtml" class="quarto-xref">Figure&nbsp;3</a>)!</p>
+<div id="fig-aihtml" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-aihtml-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/aihtmltemp.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-aihtml-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Claude AI’s website for the temperature monitor after the first prompt.
+</figcaption>
+</figure>
+</div>
+<p>The temperature was around what room temperature is (22-24°C) which is reasonable. I really like the layout and how quickly the temperature changed. I liked how the LED on/off wasn’t just a button but a slider and that the OFF symbol would glow when the slider was flipped to “ON”. I also thought the emojis and theming of the overall HTML was really nice and easy to follow. I like how resolution was about decimal places rather than a “bit” which is more user friendly.</p>
+<p>The second prompt put a really big delay between readings which I found doesn’t work very well with the SPI interface and the temperature readings were stuck at 0.000000 (which is quite chilly in my opinion). The code itself seemed quite reasonable, but was much shorter than my code and also didn’t include the UART interface. The code did not work for this prompt nor did any goading get it closer.</p>
 
 
 
-
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
